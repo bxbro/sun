@@ -1,0 +1,13 @@
+server:
+  port: 9527
+  servlet:
+    context-path: /sun
+spring:
+  application:
+    name: sun-platform
+  cloud:
+    consul:
+      host: 121.4.162.107
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
