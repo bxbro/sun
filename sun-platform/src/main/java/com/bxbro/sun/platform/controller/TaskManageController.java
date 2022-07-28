@@ -1,6 +1,6 @@
 package com.bxbro.sun.platform.controller;
 
-import com.bxbro.sun.common.Dto.ResultDto;
+import com.bxbro.sun.common.dto.ResultDto;
 import com.bxbro.sun.common.utils.ResultUtil;
 import com.bxbro.sun.platform.domain.form.TaskManageForm;
 import com.bxbro.sun.platform.service.TaskManageService;

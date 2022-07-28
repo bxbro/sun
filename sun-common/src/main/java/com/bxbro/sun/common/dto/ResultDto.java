@@ -1,4 +1,4 @@
-package com.bxbro.sun.common.Dto;
+package com.bxbro.sun.common.dto;
 
 import com.bxbro.sun.common.enums.SystemEnum;
 
