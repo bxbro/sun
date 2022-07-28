@@ -14,3 +14,12 @@ spring:
         health-check-interval: 3600s
         heartbeat:
           enabled: true
+  datasource:
+    username: root
+    password: bxxd12345+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://121.4.162.107:3306/summer?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    type: com.alibaba.druid.pool.DruidDataSource
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
