@@ -19,7 +19,10 @@ public class TaskManageForm {
     @NotBlank(message = "任务名称不能为空")
     private String taskName;
 
-    @ApiModelProperty("任务类型")
+    /**
+     * {@link com.bxbro.sun.common.enums.TaskTypeEnum}
+     */
+    @ApiModelProperty("任务类型 0生活/1工作")
     @NotNull(message = "任务类型不能为空")
     private Integer taskType;
 
@@ -28,8 +31,8 @@ public class TaskManageForm {
     private Long userId;
 
     @ApiModelProperty("截止日期")
-    @Future(message = "截止日期必须大于当前时间")
-    private Date deadline;
+    @NotBlank(message = "截止日期不能为空")
+    private String deadline;
 
     @ApiModelProperty("任务内容")
     @NotBlank(message = "任务内容不能为空")
