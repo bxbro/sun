@@ -1,6 +1,6 @@
 package com.bxbro.sun.common.utils;
 
-import com.bxbro.sun.common.dto.ResultDto;
+import com.bxbro.sun.common.domain.dto.ResultDto;
 import com.bxbro.sun.common.enums.SystemEnum;
 
 public class ResultUtil {
