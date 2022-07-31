@@ -6,7 +6,10 @@ package com.bxbro.sun.common.enums;
 public enum SystemEnum {
     SUCCESS(0, "success"),
     FAIL(-1, "fail"),
-    OTHER(999, "Unknown Exception.");
+    PARAMETER_EXCEPTION(100, "参数异常!"),
+    SERVICE_TIME_OUT(1000, "服务间调用超时"),
+    UNEXPECTED_EXCEPTION(500, "系统内部错误，请联系管理员！"),
+    OTHER(9999, "Unknown Exception.");
 
     private Integer code;
     private String desc;

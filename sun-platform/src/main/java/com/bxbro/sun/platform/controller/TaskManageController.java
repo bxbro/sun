@@ -1,6 +1,7 @@
 package com.bxbro.sun.platform.controller;
 
 import com.bxbro.sun.common.domain.dto.ResultDto;
+import com.bxbro.sun.common.utils.AssertUtils;
 import com.bxbro.sun.common.utils.ResultUtil;
 import com.bxbro.sun.platform.domain.form.TaskManageForm;
 import com.bxbro.sun.platform.domain.query.TaskManageQuery;
@@ -40,8 +41,8 @@ public class TaskManageController {
     @ApiOperation("查询任务列表")
     @GetMapping("/v1/list")
     public ResultDto queryTaskList(TaskManageQuery query) {
-        Asserts.notNull(query.getPageNo(), "页码不能为空.");
-        Asserts.notNull(query.getPageSize(), "页数不能为空.");
+        AssertUtils.notNull(query.getPageNo());
+        AssertUtils.notNull(query.getPageSize());
         return ResultUtil.outSuccess(taskManageService.queryTaskList(query));
     }
 
