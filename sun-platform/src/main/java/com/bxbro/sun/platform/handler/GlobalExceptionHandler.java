@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseBody
 public class GlobalExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 
     @ExceptionHandler(SunException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ResultDto handlerBusinessException(SunException sunException) {
-        logger.error("exception happened at {}", sunException.getMsg());
+        LOGGER.error("exception happened at {}", sunException.getMsg());
         return ResultUtil.outFail(sunException.getCode(), sunException.getMsg());
     }
 }

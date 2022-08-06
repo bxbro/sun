@@ -21,4 +21,10 @@ public interface TaskManageService extends IService<TaskManage> {
      * @return
      */
     List<TaskManageVO> queryTaskList(TaskManageQuery query);
+
+    /**
+     * 编辑任务
+     * @param form
+     */
+    void updateTask(TaskManageForm form);
 }

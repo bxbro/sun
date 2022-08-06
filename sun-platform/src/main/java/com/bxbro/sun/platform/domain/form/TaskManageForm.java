@@ -15,6 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class TaskManageForm {
 
+    private Long id;
+
     @ApiModelProperty("任务名称")
     @NotBlank(message = "任务名称不能为空")
     private String taskName;

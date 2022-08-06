@@ -22,4 +22,25 @@
         values
             (#{taskName}, #{taskType}, #{userId}, #{deadline}, #{content}, #{taskStatus}, now(), now())
     </insert>
+
+    <update id="updateTask" parameterType="com.bxbro.sun.platform.domain.entity.TaskManage">
+        update t_task_manage
+        <set>
+            <if test="taskName != null and taskName != ''">
+                task_name = #{taskName},
+            </if>
+            <if test="taskType != null">
+                task_type = #{taskType},
+            </if>
+            <if test="deadline != null">
+                deadline = #{deadline},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="taskStatus != null">
+                task_status = #{taskStatus},
+            </if>
+        </set>
+    </update>
 </mapper>

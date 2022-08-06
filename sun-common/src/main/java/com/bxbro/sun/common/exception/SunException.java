@@ -16,4 +16,8 @@ public class SunException extends RuntimeException {
         this.code = systemEnum.getCode();
         this.msg = systemEnum.getDesc();
     }
+    public SunException(String msg) {
+        this.code = SystemEnum.FAIL.getCode();
+        this.msg = msg;
+    }
 }

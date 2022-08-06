@@ -15,4 +15,10 @@ public class AssertUtils {
             throw new SunException(SystemEnum.PARAMETER_EXCEPTION);
         }
     }
+
+    public static void notNull(Object object, String msg) {
+        if (object == null) {
+            throw new SunException(msg);
+        }
+    }
 }

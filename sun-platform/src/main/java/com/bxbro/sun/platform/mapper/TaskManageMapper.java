@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface TaskManageMapper extends BaseMapper<TaskManage> {
 
     void createTask(TaskManage taskManage);
+
+    void updateTask(TaskManage taskManage);
 }
