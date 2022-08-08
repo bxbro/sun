@@ -1,0 +1,16 @@
+server:
+  port: 9528
+  servlet:
+    context-path: /sun
+spring:
+  application:
+    name: sun-notice
+  cloud:
+    consul:
+      host: 121.4.162.107
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        health-check-interval: 3600s
+        heartbeat:
+          enabled: true

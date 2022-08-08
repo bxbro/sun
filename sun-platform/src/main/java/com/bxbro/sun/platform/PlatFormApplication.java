@@ -14,8 +14,8 @@ public class PlatFormApplication {
     private static final Logger logger = LoggerFactory.getLogger(PlatFormApplication.class);
 
     public static void main(String[] args) {
-        logger.info(">>>>>>>>Sun System is starting.>>>>>>");
+        logger.info(">>>>>>>>sun-platform is starting.>>>>>>");
         SpringApplication.run(PlatFormApplication.class, args);
-        logger.info(">>>>>>>>Sun System started.>>>>>>>");
+        logger.info(">>>>>>>>sun-platform started.>>>>>>>");
     }
 }
