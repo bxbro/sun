@@ -14,3 +14,8 @@ spring:
         health-check-interval: 3600s
         heartbeat:
           enabled: true
+  mail:
+    username: 1756330108@qq.com
+    password: qxkusgfdmsltcdbg
+    default-encoding: utf-8
+    host: smtp.qq.com

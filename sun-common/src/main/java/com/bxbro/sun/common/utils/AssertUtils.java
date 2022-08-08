@@ -12,10 +12,8 @@ import java.util.Collection;
  */
 public class AssertUtils {
 
-    private static final String DEFAULT_MSG = "系统内部错误!";
-
     public static void notNull(Object object) {
-        notNull(object, DEFAULT_MSG);
+        notNull(object, SystemEnum.UNEXPECTED_EXCEPTION.getDesc());
     }
 
     public static void notNull(Object object, String msg) {
