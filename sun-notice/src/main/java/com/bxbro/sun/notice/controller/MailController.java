@@ -2,11 +2,9 @@ package com.bxbro.sun.notice.controller;
 
 import com.bxbro.sun.common.domain.dto.ResultDto;
 import com.bxbro.sun.common.utils.ResultUtil;
-import com.bxbro.sun.notice.domain.form.MailForm;
+import com.bxbro.sun.common.domain.dto.MailDto;
 import com.bxbro.sun.notice.service.MailService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -24,8 +22,8 @@ public class MailController {
     private MailService mailService;
 
     @PostMapping("/v1/new")
-    public ResultDto sendMail(MailForm mailForm) {
-        mailService.send(mailForm);
+    public ResultDto sendMail(@RequestBody MailDto mailDto) {
+        mailService.send(mailDto);
         return ResultUtil.outSuccess();
     }
 }

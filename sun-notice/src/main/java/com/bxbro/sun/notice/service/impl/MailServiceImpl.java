@@ -1,8 +1,7 @@
 package com.bxbro.sun.notice.service.impl;
 
-import com.bxbro.sun.notice.domain.form.MailForm;
+import com.bxbro.sun.common.domain.dto.MailDto;
 import com.bxbro.sun.notice.service.MailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
@@ -22,12 +21,12 @@ public class MailServiceImpl implements MailService {
     JavaMailSenderImpl javaMailSender;
 
     @Override
-    public void send(MailForm mailForm) {
+    public void send(MailDto mailDto) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setSubject(mailForm.getSubject());
-        simpleMailMessage.setText(mailForm.getContent());
-        simpleMailMessage.setFrom(mailForm.getFromAddress());
-        simpleMailMessage.setTo(mailForm.getToAddress());
+        simpleMailMessage.setSubject(mailDto.getSubject());
+        simpleMailMessage.setText(mailDto.getContent());
+        simpleMailMessage.setFrom(mailDto.getFromAddress());
+        simpleMailMessage.setTo(mailDto.getToAddress());
         javaMailSender.send(simpleMailMessage);
     }
 }

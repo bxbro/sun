@@ -1,11 +1,11 @@
 package com.bxbro.sun.notice.service;
 
-import com.bxbro.sun.notice.domain.form.MailForm;
+import com.bxbro.sun.common.domain.dto.MailDto;
 
 public interface MailService {
     /**
      * 发送邮件
-     * @param mailForm
+     * @param mailDto
      */
-    void send(MailForm mailForm);
+    void send(MailDto mailDto);
 }

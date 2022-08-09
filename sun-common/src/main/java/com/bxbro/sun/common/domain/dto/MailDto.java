@@ -1,4 +1,4 @@
-package com.bxbro.sun.notice.domain.form;
+package com.bxbro.sun.common.domain.dto;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @Since 1.0
  */
 @Data
-public class MailForm {
+public class MailDto {
     /**-----邮件主题------**/
     private String subject;
 
