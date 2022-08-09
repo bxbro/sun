@@ -16,9 +16,9 @@ spring:
           enabled: true
   datasource:
     username: root
-    password: bxxd12345+
+    password: xxx
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://121.4.162.107:3306/sun?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://xxx:3306/sun?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
     type: com.alibaba.druid.pool.DruidDataSource
 mybatis-plus:
   configuration:
