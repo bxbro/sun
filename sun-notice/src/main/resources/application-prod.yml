@@ -1,7 +1,5 @@
 server:
   port: 9528
-  servlet:
-    context-path: /sun
 spring:
   application:
     name: sun-notice

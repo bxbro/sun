@@ -12,11 +12,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(basePackages = "com.bxbro.sun.platform.service.feign")
 public class PlatFormApplication {
 
-    private static final Logger logger = LoggerFactory.getLogger(PlatFormApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlatFormApplication.class);
 
     public static void main(String[] args) {
-        logger.info(">>>>>>>>sun-platform is starting.>>>>>>");
+        LOGGER.info(">>>>>>>>sun-platform is starting.>>>>>>");
         SpringApplication.run(PlatFormApplication.class, args);
-        logger.info(">>>>>>>>sun-platform started.>>>>>>>");
+        LOGGER.info(">>>>>>>>sun-platform started.>>>>>>>");
     }
 }
