@@ -15,6 +15,6 @@ public interface NoticeFeign {
      * @param mailDto
      * @return
      */
-    @PostMapping("/sun/mail/api/v1/new")
+    @PostMapping("/mail/api/v1/new")
     ResultDto sendMail(@RequestBody MailDto mailDto);
 }
