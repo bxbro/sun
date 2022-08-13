@@ -1,6 +1,8 @@
 package com.bxbro.sun.common.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Description: TODO
@@ -9,6 +11,8 @@ import lombok.Data;
  * @Since 1.0
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MailDto {
     /**-----邮件主题------**/
     private String subject;

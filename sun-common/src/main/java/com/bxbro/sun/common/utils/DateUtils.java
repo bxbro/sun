@@ -6,6 +6,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -199,4 +200,32 @@ public class DateUtils {
         return timeDate;
     }
 
+
+    /**
+     * 计算两个日期之间的差值
+     * @param startDate yyyy-MM-dd格式
+     * @param endDate yyyy-MM-dd格式
+     * @return
+     */
+    public static Long calcDiffValue(Date startDate, Date endDate) {
+        long startDateTime = startDate.getTime();
+        long endDateTime = endDate.getTime();
+        // 时间戳相差的毫秒数
+        long num = endDateTime - startDateTime;
+        return num / 24 / 60 / 60 / 1000;
+    }
+
+    public static void main(String[] args) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            Date start = sdf.parse("2022-08-04");
+            Date end = sdf.parse("2022-08-12");
+            Long aLong = DateUtils.calcDiffValue(start, end);
+            if (aLong == 8L) {
+                System.out.println("相差8天");
+            }
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
