@@ -13,7 +13,7 @@ spring:
         heartbeat:
           enabled: true
   mail:
-    username: 1756330108@qq.com
-    password: qxkusgfdmsltcdbg
+    username:
+    password:
     default-encoding: utf-8
     host: smtp.qq.com
