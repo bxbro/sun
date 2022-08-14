@@ -26,3 +26,7 @@ spring:
         - Path=/sun/notice/**
         filters:
         - RewritePath=/sun/notice/(?<segment>.*), /$\{segment}
+management:
+  endpoint:
+    gateway:
+      enabled: false
