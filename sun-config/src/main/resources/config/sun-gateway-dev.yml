@@ -26,6 +26,8 @@ spring:
         - Path=/sun/notice/**
         filters:
         - RewritePath=/sun/notice/(?<segment>.*), /$\{segment}
+
+#修复spring cloud gateway高危漏洞，禁用actuator端点
 management:
   endpoint:
     gateway:

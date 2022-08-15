@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: sun-gateway
+  profiles:
+    active: dev
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: sun-config

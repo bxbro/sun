@@ -42,7 +42,7 @@ public class MailScheduleTask {
     /**
      * 每天14点执行一次
      */
-    @Scheduled(cron = "${sun.mail.cron}")
+//    @Scheduled(cron = "${sun.mail.cron}")
     public void noticeTask() {
         LOGGER.info("=======MailScheduleTask begin execute. ========");
         // 1.获取待完成的任务列表

@@ -8,6 +8,7 @@
         <module>sun-platform</module>
         <module>sun-notice</module>
         <module>sun-gateway</module>
+        <module>sun-config</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

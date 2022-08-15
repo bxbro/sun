@@ -3,6 +3,7 @@ package com.bxbro.sun.platform.controller;
 import com.bxbro.sun.common.domain.dto.MailDto;
 import com.bxbro.sun.common.domain.dto.ResultDto;
 import com.bxbro.sun.common.utils.ResultUtil;
+import com.bxbro.sun.platform.config.MailConfig;
 import com.bxbro.sun.platform.service.feign.NoticeFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,13 @@ public class HelloController {
 
     @Autowired
     NoticeFeign noticeFeign;
+    @Autowired
+    MailConfig mailConfig;
 
     @GetMapping("/hello")
     public String sayHello() {
-        return "The sun is rising.";
+        String fromAddress = mailConfig.getFromAddress();
+        return "The sun is rising." + fromAddress;
     }
 
     @PostMapping("sendMail")
