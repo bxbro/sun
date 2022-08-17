@@ -1,4 +1,4 @@
-package com.bxbro.sun.platform.service.task;
+package com.bxbro.sun.platform.task;
 
 import com.bxbro.sun.common.domain.dto.MailDto;
 import com.bxbro.sun.common.enums.TaskStatusEnum;
@@ -10,6 +10,7 @@ import com.bxbro.sun.platform.service.feign.NoticeFeign;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -26,10 +27,10 @@ import java.util.stream.Collectors;
  * @Since 1.0
  */
 @Component
+@EnableScheduling
 public class MailScheduleTask {
 
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(MailScheduleTask.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailScheduleTask.class);
 
     @Resource
     private TaskManageMapper taskManageMapper;
@@ -42,7 +43,7 @@ public class MailScheduleTask {
     /**
      * 每天14点执行一次
      */
-//    @Scheduled(cron = "${sun.mail.cron}")
+    @Scheduled(cron = "${sun.mail.cron}")
     public void noticeTask() {
         LOGGER.info("=======MailScheduleTask begin execute. ========");
         // 1.获取待完成的任务列表
