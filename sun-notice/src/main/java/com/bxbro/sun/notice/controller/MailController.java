@@ -1,6 +1,6 @@
 package com.bxbro.sun.notice.controller;
 
-import com.bxbro.sun.common.domain.dto.ResultDto;
+import com.bxbro.sun.common.domain.BaseResult;
 import com.bxbro.sun.common.utils.ResultUtil;
 import com.bxbro.sun.common.domain.dto.MailDto;
 import com.bxbro.sun.notice.service.MailService;
@@ -22,7 +22,7 @@ public class MailController {
     private MailService mailService;
 
     @PostMapping("/v1/new")
-    public ResultDto sendMail(@RequestBody MailDto mailDto) {
+    public BaseResult sendMail(@RequestBody MailDto mailDto) {
         mailService.send(mailDto);
         return ResultUtil.outSuccess();
     }

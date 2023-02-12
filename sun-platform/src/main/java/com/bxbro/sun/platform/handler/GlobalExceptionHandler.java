@@ -1,6 +1,6 @@
 package com.bxbro.sun.platform.handler;
 
-import com.bxbro.sun.common.domain.dto.ResultDto;
+import com.bxbro.sun.common.domain.BaseResult;
 import com.bxbro.sun.common.exception.SunException;
 import com.bxbro.sun.common.utils.ResultUtil;
 import org.slf4j.Logger;
@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SunException.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResultDto handlerBusinessException(SunException sunException) {
+    public BaseResult handlerBusinessException(SunException sunException) {
         LOGGER.error("exception happened at {}", sunException.getMsg());
         return ResultUtil.outFail(sunException.getCode(), sunException.getMsg());
     }

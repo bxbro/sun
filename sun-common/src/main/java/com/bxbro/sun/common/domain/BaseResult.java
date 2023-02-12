@@ -1,21 +1,22 @@
-package com.bxbro.sun.common.domain.dto;
+package com.bxbro.sun.common.domain;
 
 import com.bxbro.sun.common.enums.SystemEnum;
 
-import java.io.Serializable;
-
-public class ResultDto<T> implements Serializable {
+public class BaseResult<T> extends BaseModel {
     private Integer code;
     private String msg;
     private T data;
 
-    public ResultDto(Integer code, String msg, T data) {
+    public BaseResult() {
+    }
+
+    public BaseResult(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    public ResultDto(T data) {
+    public BaseResult(T data) {
         this.code = SystemEnum.SUCCESS.getCode();
         this.msg = SystemEnum.SUCCESS.getDesc();
         this.data = data;

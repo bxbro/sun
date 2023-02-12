@@ -1,7 +1,7 @@
 package com.bxbro.sun.platform.controller;
 
 import com.bxbro.sun.common.domain.dto.MailDto;
-import com.bxbro.sun.common.domain.dto.ResultDto;
+import com.bxbro.sun.common.domain.BaseResult;
 import com.bxbro.sun.common.utils.ResultUtil;
 import com.bxbro.sun.platform.config.MailConfig;
 import com.bxbro.sun.platform.service.feign.NoticeFeign;
@@ -27,7 +27,7 @@ public class HelloController {
     }
 
     @PostMapping("sendMail")
-    public ResultDto sendMail() {
+    public BaseResult sendMail() {
         MailDto mailDto = new MailDto();
         mailDto.setContent(">>>>just for test>>>>");
         mailDto.setSubject(">>>>测试>>>>");

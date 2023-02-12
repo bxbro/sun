@@ -16,7 +16,7 @@
         <result column="del_flag" property="delFlag"/>
     </resultMap>
 
-    <insert id="createTask" parameterType="com.bxbro.sun.platform.domain.entity.TaskManage">
+    <insert id="createTask" parameterType="com.bxbro.sun.platform.domain.entity.TaskManage" useGeneratedKeys="true" keyProperty="id">
         insert into t_task_manage
             (task_name, task_type, user_id, deadline, content, task_status, create_time,update_time)
         values

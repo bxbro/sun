@@ -4,12 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bxbro.sun.common.domain.BaseResult;
 import com.bxbro.sun.common.enums.TaskStatusEnum;
+import com.bxbro.sun.common.exception.SunException;
 import com.bxbro.sun.common.utils.AssertUtils;
 import com.bxbro.sun.common.utils.DateUtils;
+import com.bxbro.sun.common.utils.ResultUtil;
+import com.bxbro.sun.core.template.ServiceDelegator;
+import com.bxbro.sun.core.template.ServiceTemplate;
 import com.bxbro.sun.platform.domain.entity.TaskManage;
 import com.bxbro.sun.platform.domain.form.TaskManageForm;
 import com.bxbro.sun.platform.domain.query.TaskManageQuery;
+import com.bxbro.sun.platform.domain.request.TaskManageRequest;
 import com.bxbro.sun.platform.domain.vo.TaskManageVO;
 import com.bxbro.sun.platform.mapper.TaskManageMapper;
 import com.bxbro.sun.platform.service.TaskManageService;
@@ -28,13 +34,29 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
     private TaskManageMapper taskManageMapper;
 
     @Override
-    public void createTask(TaskManageForm form) {
-        TaskManage taskManage = new TaskManage();
-        BeanUtils.copyProperties(form, taskManage);
-        Date deadline = DateUtils.stringToDate(form.getDeadline(), DateUtils.DATE_PATTERN);
-        taskManage.setDeadline(deadline);
-        taskManage.setTaskStatus(TaskStatusEnum.WAITING_COMPLETE.getCode());
-        taskManageMapper.createTask(taskManage);
+    public BaseResult createTask(TaskManageRequest request) {
+        return ServiceTemplate.doService(request, new ServiceDelegator<TaskManageRequest, BaseResult>() {
+            @Override
+            public BaseResult initResult() {
+                return new BaseResult();
+            }
+
+            @Override
+            public void checkRequestParam(TaskManageRequest req) throws SunException {
+                // todo
+            }
+
+            @Override
+            public BaseResult doService(TaskManageRequest req) throws SunException {
+                TaskManage taskManage = new TaskManage();
+                BeanUtils.copyProperties(req, taskManage);
+                Date deadline = DateUtils.stringToDate(req.getDeadline(), DateUtils.DATE_PATTERN);
+                taskManage.setDeadline(deadline);
+                taskManage.setTaskStatus(TaskStatusEnum.WAITING_COMPLETE.getCode());
+                taskManageMapper.createTask(taskManage);
+                return ResultUtil.outSuccess(taskManage.getId());
+            }
+        });
     }
 
     @Override
