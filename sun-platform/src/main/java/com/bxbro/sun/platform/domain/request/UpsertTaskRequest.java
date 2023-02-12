@@ -11,7 +11,7 @@ import lombok.Data;
  * @since: 1.0
  */
 @Data
-public class TaskManageRequest extends BaseRequest {
+public class UpsertTaskRequest extends BaseRequest {
 
     private Long id;
 

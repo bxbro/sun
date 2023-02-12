@@ -1,12 +1,11 @@
 package com.bxbro.sun.platform.controller;
 
 import com.bxbro.sun.common.domain.BaseResult;
-import com.bxbro.sun.common.utils.AssertUtils;
 import com.bxbro.sun.common.utils.ResultUtil;
 import com.bxbro.sun.platform.domain.form.TaskManageForm;
 import com.bxbro.sun.platform.domain.query.TaskManageQuery;
-import com.bxbro.sun.platform.domain.request.TaskManageRequest;
-import com.bxbro.sun.platform.domain.vo.TaskManageVO;
+import com.bxbro.sun.platform.domain.request.TaskListRequest;
+import com.bxbro.sun.platform.domain.request.UpsertTaskRequest;
 import com.bxbro.sun.platform.service.TaskManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 
 @Api(tags = "任务管理controller")
@@ -30,9 +28,9 @@ public class TaskManageController {
     @ApiOperation("新建或编辑任务")
     @PostMapping("/v1/upsert")
     public BaseResult upsertTask(@Validated TaskManageForm form) {
-        TaskManageRequest taskManageRequest = new TaskManageRequest();
-        BeanUtils.copyProperties(form, taskManageRequest);
-        return taskManageService.upsertTask(taskManageRequest);
+        UpsertTaskRequest upsertTaskRequest = new UpsertTaskRequest();
+        BeanUtils.copyProperties(form, upsertTaskRequest);
+        return taskManageService.upsertTask(upsertTaskRequest);
     }
 
     @ApiOperation("删除任务")
@@ -44,10 +42,10 @@ public class TaskManageController {
 
     @ApiOperation("查询任务列表")
     @GetMapping("/v1/list")
-    public BaseResult<List<TaskManageVO>> queryTaskList(TaskManageQuery query) {
-        AssertUtils.notNull(query.getPageNo(), "pageNo不能为空.");
-        AssertUtils.notNull(query.getPageSize(), "pageSize不能为空.");
-        return ResultUtil.outSuccess(taskManageService.queryTaskList(query));
+    public BaseResult queryTaskList(TaskManageQuery query) {
+        TaskListRequest taskListRequest = new TaskListRequest();
+        BeanUtils.copyProperties(query, taskListRequest);
+        return taskManageService.queryTaskList(taskListRequest);
     }
 
 }

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bxbro.sun.common.domain.BaseResult;
 import com.bxbro.sun.common.enums.BusinessEnum;
+import com.bxbro.sun.common.enums.LogicEnum;
+import com.bxbro.sun.common.enums.SystemEnum;
 import com.bxbro.sun.common.enums.TaskStatusEnum;
 import com.bxbro.sun.common.exception.SunException;
 import com.bxbro.sun.common.utils.AssertUtils;
@@ -14,8 +16,9 @@ import com.bxbro.sun.common.utils.ResultUtil;
 import com.bxbro.sun.core.template.ServiceDelegator;
 import com.bxbro.sun.core.template.ServiceTemplate;
 import com.bxbro.sun.platform.domain.entity.TaskManage;
-import com.bxbro.sun.platform.domain.query.TaskManageQuery;
-import com.bxbro.sun.platform.domain.request.TaskManageRequest;
+import com.bxbro.sun.platform.domain.request.TaskListRequest;
+import com.bxbro.sun.platform.domain.request.UpsertTaskRequest;
+import com.bxbro.sun.platform.domain.vo.TaskListDataVo;
 import com.bxbro.sun.platform.domain.vo.TaskManageVO;
 import com.bxbro.sun.platform.mapper.TaskManageMapper;
 import com.bxbro.sun.platform.service.TaskManageService;
@@ -35,20 +38,20 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
     private TaskManageMapper taskManageMapper;
 
     @Override
-    public BaseResult upsertTask(TaskManageRequest request) {
-        return ServiceTemplate.doService(request, new ServiceDelegator<TaskManageRequest, BaseResult>() {
+    public BaseResult upsertTask(UpsertTaskRequest request) {
+        return ServiceTemplate.doService(request, new ServiceDelegator<UpsertTaskRequest, BaseResult>() {
             @Override
             public BaseResult initResult() {
                 return new BaseResult();
             }
 
             @Override
-            public void paramValidate(TaskManageRequest req) throws SunException {
+            public void paramValidate(UpsertTaskRequest req) throws SunException {
                 checkParam(req);
             }
 
             @Override
-            public BaseResult doService(TaskManageRequest req) throws SunException {
+            public BaseResult doService(UpsertTaskRequest req) throws SunException {
                 Long taskId;
                 // 新增
                 if (req.getId() == null) {
@@ -77,7 +80,7 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
      * 校验请求入参
      * @param req
      */
-    private void checkParam(TaskManageRequest req) {
+    private void checkParam(UpsertTaskRequest req) {
         if (StringUtils.isEmpty(req.getTaskName())) {
             throw new SunException(BusinessEnum.TASK_NAME_NOT_EXIST);
         }
@@ -96,23 +99,69 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
     }
 
     @Override
-    public List<TaskManageVO> queryTaskList(TaskManageQuery query) {
-        TaskManage taskManage = new TaskManage();
-        BeanUtils.copyProperties(query, taskManage);
+    public BaseResult queryTaskList(TaskListRequest request) {
+        return ServiceTemplate.doService(request, new ServiceDelegator<TaskListRequest, BaseResult>() {
+            @Override
+            public BaseResult initResult() {
+                return new BaseResult();
+            }
 
-        IPage<TaskManage> page = new Page<>(query.getPageNo(), query.getPageSize());
-        QueryWrapper<TaskManage> wrapper = new QueryWrapper<>(taskManage);
-//        wrapper.like("task_name", query.getTaskName());
+            @Override
+            public void paramValidate(TaskListRequest req) throws SunException {
+                if (req.getPageNo() == null || req.getPageSize() == null) {
+                    throw new SunException(SystemEnum.PARAM_ILLEGAL);
+                }
+            }
 
-        page = taskManageMapper.selectPage(page, wrapper);
-        List<TaskManage> taskManageList = page.getRecords();
-        List<TaskManageVO> voList = new ArrayList<>();
-        taskManageList.forEach(e -> {
-            TaskManageVO vo = new TaskManageVO();
-            BeanUtils.copyProperties(e, vo);
-            voList.add(vo);
+            @Override
+            public BaseResult doService(TaskListRequest req) throws SunException {
+                TaskManage taskManage = new TaskManage();
+                BeanUtils.copyProperties(req, taskManage);
+
+                IPage<TaskManage> page = new Page<>(req.getPageNo(), req.getPageSize());
+                QueryWrapper<TaskManage> wrapper = buildQueryWrapper(req, taskManage);
+
+                page = taskManageMapper.selectPage(page, wrapper);
+                if (page == null) {
+                    return new BaseResult();
+                }
+                List<TaskManageVO> voList = new ArrayList<>();
+                page.getRecords().forEach(e -> {
+                    TaskManageVO vo = new TaskManageVO();
+                    BeanUtils.copyProperties(e, vo);
+                    voList.add(vo);
+                });
+
+                TaskListDataVo dataVo = new TaskListDataVo();
+                dataVo.setList(voList);
+                dataVo.setCount(voList.size());
+                return ResultUtil.outSuccess(dataVo);
+            }
         });
-        return voList;
+    }
+
+    /**
+     * 构建查询条件
+     * @param req
+     * @param taskManage
+     * @return
+     */
+    private QueryWrapper<TaskManage> buildQueryWrapper(TaskListRequest req, TaskManage taskManage) {
+        QueryWrapper<TaskManage> wrapper = new QueryWrapper<>(taskManage);
+        wrapper.eq("del_flag", LogicEnum.UNDELETE.getCode());
+
+        // 先按照任务状态升序排序，即<待完成>在前，<已完成>在后
+        wrapper.orderByAsc("task_status");
+        // 再按照任务的创建时间降序排序
+        wrapper.orderByDesc("create_time");
+
+        if (StringUtils.isNotEmpty(req.getTaskName())) {
+            wrapper.like("task_name", req.getTaskName());
+        }
+        if (req.getTaskType() != null) {
+            wrapper.eq("task_type", req.getTaskType());
+        }
+        return wrapper;
     }
 
 }

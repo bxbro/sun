@@ -13,6 +13,14 @@ public enum LogicEnum {
         this.desc = desc;
     }
 
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
     public void setCode(Integer code) {
         this.code = code;
     }
