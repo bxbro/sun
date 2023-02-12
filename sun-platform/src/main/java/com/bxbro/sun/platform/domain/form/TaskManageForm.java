@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class TaskManageForm {
 
+    @ApiModelProperty("新建时id为空，编辑时id有值")
     private Long id;
 
     @ApiModelProperty("任务名称")

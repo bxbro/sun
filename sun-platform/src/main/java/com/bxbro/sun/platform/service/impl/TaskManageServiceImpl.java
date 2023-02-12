@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bxbro.sun.common.domain.BaseResult;
+import com.bxbro.sun.common.enums.BusinessEnum;
 import com.bxbro.sun.common.enums.TaskStatusEnum;
 import com.bxbro.sun.common.exception.SunException;
 import com.bxbro.sun.common.utils.AssertUtils;
@@ -13,12 +14,12 @@ import com.bxbro.sun.common.utils.ResultUtil;
 import com.bxbro.sun.core.template.ServiceDelegator;
 import com.bxbro.sun.core.template.ServiceTemplate;
 import com.bxbro.sun.platform.domain.entity.TaskManage;
-import com.bxbro.sun.platform.domain.form.TaskManageForm;
 import com.bxbro.sun.platform.domain.query.TaskManageQuery;
 import com.bxbro.sun.platform.domain.request.TaskManageRequest;
 import com.bxbro.sun.platform.domain.vo.TaskManageVO;
 import com.bxbro.sun.platform.mapper.TaskManageMapper;
 import com.bxbro.sun.platform.service.TaskManageService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
     private TaskManageMapper taskManageMapper;
 
     @Override
-    public BaseResult createTask(TaskManageRequest request) {
+    public BaseResult upsertTask(TaskManageRequest request) {
         return ServiceTemplate.doService(request, new ServiceDelegator<TaskManageRequest, BaseResult>() {
             @Override
             public BaseResult initResult() {
@@ -42,21 +43,56 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
             }
 
             @Override
-            public void checkRequestParam(TaskManageRequest req) throws SunException {
-                // todo
+            public void paramValidate(TaskManageRequest req) throws SunException {
+                checkParam(req);
             }
 
             @Override
             public BaseResult doService(TaskManageRequest req) throws SunException {
-                TaskManage taskManage = new TaskManage();
-                BeanUtils.copyProperties(req, taskManage);
-                Date deadline = DateUtils.stringToDate(req.getDeadline(), DateUtils.DATE_PATTERN);
-                taskManage.setDeadline(deadline);
-                taskManage.setTaskStatus(TaskStatusEnum.WAITING_COMPLETE.getCode());
-                taskManageMapper.createTask(taskManage);
-                return ResultUtil.outSuccess(taskManage.getId());
+                Long taskId;
+                // 新增
+                if (req.getId() == null) {
+                    TaskManage taskManage = new TaskManage();
+                    BeanUtils.copyProperties(req, taskManage);
+                    Date deadline = DateUtils.stringToDate(req.getDeadline(), DateUtils.DATE_PATTERN);
+                    taskManage.setDeadline(deadline);
+                    taskManage.setTaskStatus(TaskStatusEnum.WAITING_COMPLETE.getCode());
+                    taskManageMapper.createTask(taskManage);
+                    taskId = taskManage.getId();
+                }
+                // 编辑
+                else {
+                    TaskManage taskManage = taskManageMapper.selectById(req.getId());
+                    AssertUtils.notNull(taskManage, "taskId有误，数据库中不存在该任务.");
+                    BeanUtils.copyProperties(req, taskManage);
+                    taskManageMapper.updateTask(taskManage);
+                    taskId = req.getId();
+                }
+                return ResultUtil.outSuccess(taskId);
             }
         });
+    }
+
+    /**
+     * 校验请求入参
+     * @param req
+     */
+    private void checkParam(TaskManageRequest req) {
+        if (StringUtils.isEmpty(req.getTaskName())) {
+            throw new SunException(BusinessEnum.TASK_NAME_NOT_EXIST);
+        }
+        if (req.getTaskType() == null) {
+            throw new SunException(BusinessEnum.TASK_TYPE_NOT_EXIST);
+        }
+        if (StringUtils.isEmpty(req.getDeadline())) {
+            throw new SunException(BusinessEnum.DEADLINE_NOT_EXIST);
+        }
+        if (StringUtils.isEmpty(req.getContent())) {
+            throw new SunException(BusinessEnum.CONTENT_NOT_EXIST);
+        }
+        if (req.getUserId() == null) {
+            throw new SunException(BusinessEnum.USER_ID_NOT_EXIST);
+        }
     }
 
     @Override
@@ -79,11 +115,4 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
         return voList;
     }
 
-    @Override
-    public void updateTask(TaskManageForm form) {
-        TaskManage task = taskManageMapper.selectById(form.getId());
-        AssertUtils.notNull(task, "任务id有误，数据库中不存在该任务.");
-        BeanUtils.copyProperties(form, task);
-        taskManageMapper.updateTask(task);
-    }
 }

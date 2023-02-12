@@ -12,10 +12,10 @@ import java.util.List;
 
 public interface TaskManageService extends IService<TaskManage> {
     /**
-     * 创建任务
-     * @param form
+     * 新建或编辑任务
+     * @param request
      */
-    BaseResult createTask(TaskManageRequest request);
+    BaseResult upsertTask(TaskManageRequest request);
 
     /**
      * 分页查询任务列表
@@ -23,10 +23,4 @@ public interface TaskManageService extends IService<TaskManage> {
      * @return
      */
     List<TaskManageVO> queryTaskList(TaskManageQuery query);
-
-    /**
-     * 编辑任务
-     * @param form
-     */
-    void updateTask(TaskManageForm form);
 }

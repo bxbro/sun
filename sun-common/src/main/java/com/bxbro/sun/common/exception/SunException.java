@@ -1,5 +1,6 @@
 package com.bxbro.sun.common.exception;
 
+import com.bxbro.sun.common.enums.BusinessEnum;
 import com.bxbro.sun.common.enums.SystemEnum;
 import lombok.Data;
 
@@ -16,6 +17,11 @@ public class SunException extends RuntimeException {
         this.code = systemEnum.getCode();
         this.msg = systemEnum.getDesc();
     }
+    public SunException(BusinessEnum businessEnum) {
+        this.code = businessEnum.getCode();
+        this.msg = businessEnum.getDesc();
+    }
+
     public SunException(Integer code, String msg) {
         this.code = code;
         this.msg = msg;

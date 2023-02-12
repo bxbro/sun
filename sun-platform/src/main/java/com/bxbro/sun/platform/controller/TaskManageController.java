@@ -9,8 +9,6 @@ import com.bxbro.sun.platform.domain.request.TaskManageRequest;
 import com.bxbro.sun.platform.domain.vo.TaskManageVO;
 import com.bxbro.sun.platform.service.TaskManageService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
@@ -29,12 +27,12 @@ public class TaskManageController {
     private TaskManageService taskManageService;
 
 
-    @ApiOperation("新建任务")
-    @PostMapping("/v1/new")
-    public BaseResult createTask(@Validated TaskManageForm form) {
+    @ApiOperation("新建或编辑任务")
+    @PostMapping("/v1/upsert")
+    public BaseResult upsertTask(@Validated TaskManageForm form) {
         TaskManageRequest taskManageRequest = new TaskManageRequest();
         BeanUtils.copyProperties(form, taskManageRequest);
-        return taskManageService.createTask(taskManageRequest);
+        return taskManageService.upsertTask(taskManageRequest);
     }
 
     @ApiOperation("删除任务")
@@ -50,19 +48,6 @@ public class TaskManageController {
         AssertUtils.notNull(query.getPageNo(), "pageNo不能为空.");
         AssertUtils.notNull(query.getPageSize(), "pageSize不能为空.");
         return ResultUtil.outSuccess(taskManageService.queryTaskList(query));
-    }
-
-
-    @ApiOperation("编辑任务")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "任务id", required = true, paramType = "path", dataType = "Integer")
-    })
-    @PutMapping("/v1/{id}")
-    public BaseResult updateTask(@PathVariable("id") Long taskId, @Validated TaskManageForm form) {
-        AssertUtils.notNull(taskId, "taskId不能为空.");
-        form.setId(taskId);
-        taskManageService.updateTask(form);
-        return ResultUtil.outSuccess();
     }
 
 }

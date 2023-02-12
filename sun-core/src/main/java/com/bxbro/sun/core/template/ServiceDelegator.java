@@ -20,11 +20,11 @@ public interface ServiceDelegator<T extends BaseRequest, R extends BaseResult> {
     R initResult();
 
     /**
-     * 校验请求入参
+     * 入参校验
      * @param req
      * @throws SunException
      */
-    void checkRequestParam(T req) throws SunException;
+    void paramValidate(T req) throws SunException;
 
     /**
      * 执行服务

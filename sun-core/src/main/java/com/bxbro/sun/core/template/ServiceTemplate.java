@@ -28,7 +28,7 @@ public final class ServiceTemplate {
             result = delegator.initResult();
 
             // 2.校验入参
-            delegator.checkRequestParam(req);
+            delegator.paramValidate(req);
 
             // 3.执行service层逻辑
             result = delegator.doService(req);
