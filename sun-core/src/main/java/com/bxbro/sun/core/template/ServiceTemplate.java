@@ -6,8 +6,10 @@ import com.bxbro.sun.common.enums.SystemEnum;
 import com.bxbro.sun.common.exception.SunException;
 
 /**
- * Service层 模板类
- *
+ * Service模板
+ * <p>
+ *     统一处理业务处理流程，异常捕获
+ * </p>
  * @author: dong
  * @date: 2023/2/11 22:55
  * @since: 1.0
@@ -30,6 +32,32 @@ public final class ServiceTemplate {
             delegator.paramValidate(req);
             // 3.执行service层逻辑
             result = delegator.doService(req);
+        } catch (SunException ex) {
+            result = delegator.initResult();
+            // 构建失败的返回结果
+            delegator.buildFailedResult(result, ex.getCode(), ex.getMsg());
+        } catch (Throwable throwable) {
+            result = delegator.initResult();
+            delegator.buildFailedResult(result, SystemEnum.FAIL.getCode(), "System Error.");
+        } finally {
+            // todo 清除上下文
+        }
+        return result;
+    }
+
+
+    /**
+     * 模板方法，针对没有入参的请求
+     * @param delegator
+     * @param <R>
+     * @return
+     */
+    public static <R extends BaseResult> R doService(ServiceDelegatorNoRequest<R> delegator) {
+        // 1.初始化
+        R result;
+        try {
+            // 2.执行service层逻辑
+            result = delegator.doService();
         } catch (SunException ex) {
             result = delegator.initResult();
             // 构建失败的返回结果
