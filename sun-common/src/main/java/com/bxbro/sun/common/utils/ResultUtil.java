@@ -3,6 +3,9 @@ package com.bxbro.sun.common.utils;
 import com.bxbro.sun.common.domain.BaseResult;
 import com.bxbro.sun.common.enums.SystemEnum;
 
+/**
+ * 响应结果工具类
+ */
 public class ResultUtil {
 
     public static <R> BaseResult<R> outSuccess() {

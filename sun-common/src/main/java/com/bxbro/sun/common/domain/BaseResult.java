@@ -2,6 +2,10 @@ package com.bxbro.sun.common.domain;
 
 import com.bxbro.sun.common.enums.SystemEnum;
 
+/**
+ * 统一封装响应体
+ * @param <T>
+ */
 public class BaseResult<T> extends BaseModel {
     private Integer code;
     private String msg;
