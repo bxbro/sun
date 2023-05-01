@@ -1,10 +1,13 @@
 package com.bxbro.sun.notice.controller;
 
-import com.bxbro.sun.common.domain.BaseResult;
-import com.bxbro.sun.common.utils.ResultUtil;
 import com.bxbro.sun.common.domain.dto.MailDto;
+import com.bxbro.sun.common.utils.ResultUtil;
+import com.bxbro.sun.core.model.BaseResult;
 import com.bxbro.sun.notice.service.MailService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
