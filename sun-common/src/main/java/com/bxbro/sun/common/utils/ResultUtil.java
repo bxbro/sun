@@ -1,7 +1,7 @@
 package com.bxbro.sun.common.utils;
 
-import com.bxbro.sun.common.domain.BaseResult;
 import com.bxbro.sun.common.enums.SystemEnum;
+import com.bxbro.sun.core.model.BaseResult;
 
 /**
  * 响应结果工具类
