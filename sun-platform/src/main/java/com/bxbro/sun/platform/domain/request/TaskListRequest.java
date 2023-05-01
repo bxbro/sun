@@ -1,6 +1,6 @@
 package com.bxbro.sun.platform.domain.request;
 
-import com.bxbro.sun.common.domain.BaseRequest;
+import com.bxbro.sun.core.model.BaseRequest;
 import lombok.Data;
 
 /**

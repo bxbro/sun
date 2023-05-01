@@ -1,12 +1,14 @@
 package com.bxbro.sun.platform.handler;
 
-import com.bxbro.sun.common.domain.BaseResult;
 import com.bxbro.sun.common.exception.SunException;
 import com.bxbro.sun.common.utils.ResultUtil;
+import com.bxbro.sun.core.model.BaseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 全局异常处理

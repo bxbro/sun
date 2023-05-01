@@ -1,7 +1,7 @@
 package com.bxbro.sun.platform.service.feign;
 
 import com.bxbro.sun.common.domain.dto.MailDto;
-import com.bxbro.sun.common.domain.BaseResult;
+import com.bxbro.sun.core.model.BaseResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;

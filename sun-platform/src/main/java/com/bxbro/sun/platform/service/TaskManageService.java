@@ -1,7 +1,7 @@
 package com.bxbro.sun.platform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bxbro.sun.common.domain.BaseResult;
+import com.bxbro.sun.core.model.BaseResult;
 import com.bxbro.sun.platform.domain.entity.TaskManage;
 import com.bxbro.sun.platform.domain.request.TaskListRequest;
 import com.bxbro.sun.platform.domain.request.UpsertTaskRequest;

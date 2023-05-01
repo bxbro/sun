@@ -1,8 +1,8 @@
 package com.bxbro.sun.platform.controller;
 
 import com.bxbro.sun.common.domain.dto.MailDto;
-import com.bxbro.sun.common.domain.BaseResult;
 import com.bxbro.sun.common.utils.ResultUtil;
+import com.bxbro.sun.core.model.BaseResult;
 import com.bxbro.sun.platform.config.MailConfig;
 import com.bxbro.sun.platform.service.feign.NoticeFeign;
 import org.springframework.beans.factory.annotation.Autowired;
