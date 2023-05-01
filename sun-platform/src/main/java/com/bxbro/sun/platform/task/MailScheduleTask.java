@@ -7,6 +7,8 @@ import com.bxbro.sun.platform.config.MailConfig;
 import com.bxbro.sun.platform.domain.entity.TaskManage;
 import com.bxbro.sun.platform.mapper.TaskManageMapper;
 import com.bxbro.sun.platform.service.feign.NoticeFeign;
+import com.xxl.job.core.context.XxlJobHelper;
+import com.xxl.job.core.handler.annotation.XxlJob;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,7 @@ import java.util.stream.Collectors;
  * @Date 2022/8/12 22:04
  * @Since 1.0
  */
-@Component
+//@Component
 @EnableScheduling
 public class MailScheduleTask {
 
@@ -38,6 +40,12 @@ public class MailScheduleTask {
     private NoticeFeign noticeFeign;
     @Resource
     private MailConfig config;
+
+
+    @XxlJob(value = "testXxlJobHandler")
+    public void testXxlJob() {
+        XxlJobHelper.log("this is a serious test for xxl-job frame.");
+    }
 
 
     /**
