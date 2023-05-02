@@ -10,10 +10,6 @@ import com.bxbro.sun.platform.service.feign.NoticeFeign;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -28,11 +24,8 @@ import java.util.stream.Collectors;
  * @Date 2022/8/12 22:04
  * @Since 1.0
  */
-//@Component
-@EnableScheduling
+@Component
 public class MailScheduleTask {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MailScheduleTask.class);
 
     @Resource
     private TaskManageMapper taskManageMapper;
@@ -48,19 +41,16 @@ public class MailScheduleTask {
     }
 
 
-    /**
-     * 每天14点执行一次
-     */
-    @Scheduled(cron = "${sun.mail.cron}")
-    public void noticeTask() {
-        LOGGER.info("=======MailScheduleTask begin execute. ========");
+    @XxlJob(value = "noticeTaskHandler")
+    public void noticeTaskHandler() {
+        XxlJobHelper.log("=======MailScheduleTask begin execute. ========");
         // 1.获取待完成的任务列表
         List<TaskManage> taskList = taskManageMapper.selectList(null);
         taskList = taskList.stream()
                 .filter(e-> TaskStatusEnum.WAITING_COMPLETE.getCode().equals(e.getTaskStatus()))
                         .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(taskList)) {
-            LOGGER.info("========数据库中不存在待完成的任务. ScheduleTask End. ==========");
+            XxlJobHelper.log("========数据库中不存在待完成的任务. ScheduleTask End. ==========");
             return;
         }
         // 2.遍历该list，将当前日期与每个task的deadline进行比较。
@@ -91,6 +81,6 @@ public class MailScheduleTask {
                 taskManageMapper.updateTask(task);
             }
         }
-        LOGGER.info("=======MailScheduleTask execute end. ========");
+        XxlJobHelper.log("=======MailScheduleTask execute end. ========");
     }
 }
