@@ -4,7 +4,8 @@ spring:
   profiles:
     active: dev
   cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: sun-config
+    nacos:
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        refresh-enabled: true
