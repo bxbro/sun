@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
 
 /**
- * @Description: TODO
+ * @Description: 网关服务启动类
  * @Author: dong
  * @Date 2022/8/12 7:39
  * @Since 1.0
