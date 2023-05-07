@@ -33,7 +33,7 @@ public class TaskManageForm {
     @NotNull(message = "用户id不能为空")
     private Long userId;
 
-    @ApiModelProperty("截止日期")
+    @ApiModelProperty(value = "截止日期", example = "2023-05-07")
     @NotBlank(message = "截止日期不能为空")
     private String deadline;
 

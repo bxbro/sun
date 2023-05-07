@@ -20,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableSwaggerBootstrapUI
-@Profile("!prod")
+//@Profile("!prod")
 public class SwaggerConfig {
 
     private ApiInfo apiInfo() {

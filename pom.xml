@@ -24,8 +24,8 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-        <nacos.discovery.version>2.1.1.RELEASE</nacos.discovery.version>
-        <nacos.config.version>2.1.1.RELEASE</nacos.config.version>
+        <nacos-discovery.version>2.1.1.RELEASE</nacos-discovery.version>
+        <nacos-config.version>2.1.1.RELEASE</nacos-config.version>
     </properties>
 
     <dependencies>
@@ -33,14 +33,14 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <version>${nacos.discovery.version}</version>
+            <version>${nacos-discovery.version}</version>
         </dependency>
 
         <!--nacos配置管理-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <version>${nacos.config.version}</version>
+            <version>${nacos-config.version}</version>
         </dependency>
 
         <dependency>

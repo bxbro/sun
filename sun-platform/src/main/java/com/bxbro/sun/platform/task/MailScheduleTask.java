@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +54,8 @@ public class MailScheduleTask {
             XxlJobHelper.log("========数据库中不存在待完成的任务. ScheduleTask End. ==========");
             return;
         }
+        XxlJobHelper.log("待完成的任务列表有:【{}】", Arrays.toString(taskList.toArray()));
+
         // 2.遍历该list，将当前日期与每个task的deadline进行比较。
         for (TaskManage task : taskList) {
             if (null == task || null == task.getDeadline()) {
@@ -66,16 +69,19 @@ public class MailScheduleTask {
 
             // 离deadline还有8天的时候
             if (StringUtils.compare(currentDateStr, deadlineStr) < 0 && DateUtils.calcDiffValue(currentDate, deadline) == 8L) {
+                XxlJobHelper.log("Attention !!! The task [{}] remains only 8 days!!!", task.getTaskName());
                 // 发邮件提醒 to me
                 MailDto mailDto = new MailDto(task.getTaskName(), task.getContent(), config.getFromAddress(), config.getFromAddress());
                 noticeFeign.sendMail(mailDto);
 
             } else if (StringUtils.compare(currentDateStr, deadlineStr) == 0) {
+                XxlJobHelper.log("Already send e-mail to her!!! TaskName is:[{}]", task.getTaskName());
                 // 发送邮件祝福 to her
                 MailDto mailDto = new MailDto(task.getTaskName(), config.getBirthdayText(), config.getToAddress(), config.getFromAddress());
                 noticeFeign.sendMail(mailDto);
 
             } else if(StringUtils.compare(currentDateStr, deadlineStr) > 0) {
+                XxlJobHelper.log("The task [{}] has been delayed.", task.getTaskName());
                 // 将task设置为已超期
                 task.setTaskStatus(TaskStatusEnum.DELAYED.getCode());
                 taskManageMapper.updateTask(task);

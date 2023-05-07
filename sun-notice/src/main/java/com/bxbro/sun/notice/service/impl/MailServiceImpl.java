@@ -1,7 +1,10 @@
 package com.bxbro.sun.notice.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.bxbro.sun.common.domain.dto.MailDto;
 import com.bxbro.sun.notice.service.MailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import javax.annotation.Resource;
 @Service
 public class MailServiceImpl implements MailService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailServiceImpl.class);
+
     @Resource
     JavaMailSenderImpl javaMailSender;
 
@@ -27,6 +32,8 @@ public class MailServiceImpl implements MailService {
         simpleMailMessage.setText(mailDto.getContent());
         simpleMailMessage.setFrom(mailDto.getFromAddress());
         simpleMailMessage.setTo(mailDto.getToAddress());
+        LOGGER.info("the content of mail is [{}]", JSON.toJSONString(simpleMailMessage));
         javaMailSender.send(simpleMailMessage);
+        LOGGER.info("Send mail succeed.");
     }
 }
