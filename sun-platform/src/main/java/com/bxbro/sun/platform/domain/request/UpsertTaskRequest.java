@@ -18,7 +18,7 @@ public class UpsertTaskRequest extends BaseRequest {
     private String taskName;
 
     /**
-     * {@link com.bxbro.sun.common.enums.TaskTypeEnum}
+     * {@link com.bxbro.sun.common.base.enums.TaskTypeEnum}
      */
     private Integer taskType;
 

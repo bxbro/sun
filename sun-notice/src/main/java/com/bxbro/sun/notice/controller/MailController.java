@@ -1,7 +1,7 @@
 package com.bxbro.sun.notice.controller;
 
-import com.bxbro.sun.common.domain.dto.MailDto;
-import com.bxbro.sun.common.utils.ResultUtil;
+import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.tools.utils.ResultUtil;
 import com.bxbro.sun.core.model.BaseResult;
 import com.bxbro.sun.notice.service.MailService;
 import org.springframework.web.bind.annotation.PostMapping;

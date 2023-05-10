@@ -2,7 +2,7 @@ package com.bxbro.sun.platform.domain.vo;
 
 import com.bxbro.sun.platform.config.TaskStatusSerializer;
 import com.bxbro.sun.platform.config.TaskTypeSerializer;
-import com.bxbro.sun.platform.domain.entity.TaskManage;
+import com.bxbro.sun.common.base.domain.entity.TaskManage;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

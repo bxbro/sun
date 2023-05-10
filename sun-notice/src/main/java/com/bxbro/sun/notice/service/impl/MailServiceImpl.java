@@ -1,7 +1,7 @@
 package com.bxbro.sun.notice.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.bxbro.sun.common.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDto;
 import com.bxbro.sun.notice.service.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

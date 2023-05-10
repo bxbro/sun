@@ -1,7 +1,7 @@
 package com.bxbro.sun.platform.controller;
 
-import com.bxbro.sun.common.domain.dto.MailDto;
-import com.bxbro.sun.common.utils.ResultUtil;
+import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.tools.utils.ResultUtil;
 import com.bxbro.sun.core.model.BaseResult;
 import com.bxbro.sun.platform.config.MailConfig;
 import com.bxbro.sun.platform.service.feign.NoticeFeign;

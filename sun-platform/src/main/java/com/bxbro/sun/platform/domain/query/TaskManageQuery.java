@@ -1,6 +1,6 @@
 package com.bxbro.sun.platform.domain.query;
 
-import com.bxbro.sun.common.domain.query.BasicQuery;
+import com.bxbro.sun.common.base.domain.query.BasicQuery;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

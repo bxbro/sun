@@ -3,7 +3,7 @@
 <mapper namespace="com.bxbro.sun.platform.mapper.TaskManageMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.bxbro.sun.platform.domain.entity.TaskManage">
+    <resultMap id="BaseResultMap" type="com.bxbro.sun.common.base.domain.entity.TaskManage">
         <id column="id" property="id" />
         <result column="task_name" property="taskName" />
         <result column="task_type" property="taskType" />
@@ -16,14 +16,14 @@
         <result column="del_flag" property="delFlag"/>
     </resultMap>
 
-    <insert id="createTask" parameterType="com.bxbro.sun.platform.domain.entity.TaskManage" useGeneratedKeys="true" keyProperty="id">
+    <insert id="createTask" parameterType="com.bxbro.sun.common.base.domain.entity.TaskManage" useGeneratedKeys="true" keyProperty="id">
         insert into t_task_manage
             (task_name, task_type, user_id, deadline, content, task_status, create_time,update_time)
         values
             (#{taskName}, #{taskType}, #{userId}, #{deadline}, #{content}, #{taskStatus}, now(), now())
     </insert>
 
-    <update id="updateTask" parameterType="com.bxbro.sun.platform.domain.entity.TaskManage">
+    <update id="updateTask" parameterType="com.bxbro.sun.common.base.domain.entity.TaskManage">
         update t_task_manage
         <set>
             <if test="taskName != null and taskName != ''">

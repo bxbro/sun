@@ -1,6 +1,6 @@
 package com.bxbro.sun.platform.service.feign;
 
-import com.bxbro.sun.common.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

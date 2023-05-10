@@ -1,7 +1,7 @@
 package com.bxbro.sun.platform.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bxbro.sun.platform.domain.entity.TaskManage;
+import com.bxbro.sun.common.base.domain.entity.TaskManage;
 import org.springframework.stereotype.Repository;
 
 @Repository

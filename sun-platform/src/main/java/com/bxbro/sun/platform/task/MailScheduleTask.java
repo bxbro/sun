@@ -1,10 +1,10 @@
 package com.bxbro.sun.platform.task;
 
-import com.bxbro.sun.common.domain.dto.MailDto;
-import com.bxbro.sun.common.enums.TaskStatusEnum;
-import com.bxbro.sun.common.utils.DateUtils;
+import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.base.enums.TaskStatusEnum;
+import com.bxbro.sun.common.tools.utils.DateUtils;
 import com.bxbro.sun.platform.config.MailConfig;
-import com.bxbro.sun.platform.domain.entity.TaskManage;
+import com.bxbro.sun.common.base.domain.entity.TaskManage;
 import com.bxbro.sun.platform.mapper.TaskManageMapper;
 import com.bxbro.sun.platform.service.feign.NoticeFeign;
 import com.xxl.job.core.context.XxlJobHelper;
@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -54,7 +55,9 @@ public class MailScheduleTask {
             XxlJobHelper.log("========数据库中不存在待完成的任务. ScheduleTask End. ==========");
             return;
         }
-        XxlJobHelper.log("待完成的任务列表有:【{}】", Arrays.toString(taskList.toArray()));
+
+        Set<String> nameSet = taskList.stream().map(TaskManage::getTaskName).collect(Collectors.toSet());
+        XxlJobHelper.log("待完成的任务列表有:【{}】", Arrays.toString(nameSet.toArray()));
 
         // 2.遍历该list，将当前日期与每个task的deadline进行比较。
         for (TaskManage task : taskList) {

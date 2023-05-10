@@ -1,6 +1,6 @@
 package com.bxbro.sun.notice.service;
 
-import com.bxbro.sun.common.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDto;
 
 public interface MailService {
     /**

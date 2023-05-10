@@ -5,10 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @ApiModel("任务管理表单")
 @Data
@@ -23,7 +21,7 @@ public class TaskManageForm {
     private String taskName;
 
     /**
-     * {@link com.bxbro.sun.common.enums.TaskTypeEnum}
+     * {@link com.bxbro.sun.common.base.enums.TaskTypeEnum}
      */
     @ApiModelProperty("任务类型 0生活/1工作")
     @NotNull(message = "任务类型不能为空")
