@@ -72,6 +72,20 @@
       <version>1.1.23</version>
     </dependency>
 
+    <!--start: mybatis plus generator依赖的包-->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-generator</artifactId>
+      <version>3.2.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity-engine-core</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <!--end: mybatis plus generator依赖的包-->
+
   </dependencies>
 
   <build>
