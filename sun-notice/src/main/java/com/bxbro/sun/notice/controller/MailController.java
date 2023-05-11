@@ -3,7 +3,7 @@ package com.bxbro.sun.notice.controller;
 import com.bxbro.sun.common.base.domain.dto.MailDto;
 import com.bxbro.sun.common.tools.utils.ResultUtil;
 import com.bxbro.sun.core.model.BaseResult;
-import com.bxbro.sun.notice.service.MailService;
+import com.bxbro.sun.notice.support.MailHelper;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +22,11 @@ import javax.annotation.Resource;
 public class MailController {
 
     @Resource
-    private MailService mailService;
+    private MailHelper mailHelper;
 
     @PostMapping("/v1/new")
     public BaseResult sendMail(@RequestBody MailDto mailDto) {
-        mailService.send(mailDto);
+        mailHelper.sendMail(mailDto);
         return ResultUtil.outSuccess();
     }
 }

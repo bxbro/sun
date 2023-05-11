@@ -1,32 +1,35 @@
-package com.bxbro.sun.notice.service.impl;
+package com.bxbro.sun.notice.support;
 
 import com.alibaba.fastjson.JSON;
 import com.bxbro.sun.common.base.domain.dto.MailDto;
-import com.bxbro.sun.notice.service.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 /**
- * @Description: 邮件通知Service类
- * @Author: dong
- * @Date 2022/8/7 18:19
- * @Since 1.0
+ * 邮件工具类
+ *
+ * @author: dong
+ * @date: 2023/5/11 18:46
+ * @since: 1.0
  */
-@Service
-public class MailServiceImpl implements MailService {
+@Component
+public class MailHelper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MailServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailHelper.class);
 
     @Resource
     JavaMailSenderImpl javaMailSender;
 
-    @Override
-    public void send(MailDto mailDto) {
+    /**
+     * 发送邮件
+     * @param mailDto
+     */
+    public void sendMail(MailDto mailDto) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setSubject(mailDto.getSubject());
         simpleMailMessage.setText(mailDto.getContent());
