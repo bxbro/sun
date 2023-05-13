@@ -1,6 +1,7 @@
 package com.bxbro.sun.notice.service;
 
 import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.notice.support.MailHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class MailServiceTest {
 
     @Autowired
-    MailService mailService;
+    MailHelper mailHelper;
 
     @Test
     public void testSendMail() {
@@ -29,7 +30,7 @@ public class MailServiceTest {
         mailDto.setSubject(">>>>测试>>>>");
         mailDto.setFromAddress("1756330108@qq.com");
         mailDto.setToAddress("1015177471@qq.com");
-        mailService.send(mailDto);
+        mailHelper.sendMail(mailDto);
         log.info("=======send succeed!=========");
     }
 }

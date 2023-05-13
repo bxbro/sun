@@ -1,23 +1,21 @@
 package com.bxbro.sun.notice.task;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.date.ChineseDate;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import com.bxbro.sun.common.base.domain.dto.MailDto;
 import com.bxbro.sun.common.base.enums.DateTypeEnum;
 import com.bxbro.sun.common.tools.utils.DateUtils;
 import com.bxbro.sun.common.tools.utils.ListUtils;
 import com.bxbro.sun.notice.domain.dto.MemorialDayDto;
+import com.bxbro.sun.notice.domain.dto.MemorialDayUserDto;
 import com.bxbro.sun.notice.service.IMemorialDayService;
+import com.bxbro.sun.notice.service.IMemorialDayUserRelService;
 import com.bxbro.sun.notice.support.MailHelper;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +32,8 @@ public class MemorialDayScheduleTask {
 
     @Resource
     private IMemorialDayService memorialDayService;
+    @Resource
+    private IMemorialDayUserRelService memorialDayUserRelService;
     @Resource
     private MailHelper mailHelper;
 
@@ -72,8 +72,10 @@ public class MemorialDayScheduleTask {
             String[] noticeTimePointArray = dto.getNoticeTimePoints().split(",");
             List<Long> noticeList = ListUtils.convertStr2Long(noticeTimePointArray);
             if (noticeList.contains(DateUtils.calcDiffValue(currentDate, date))) {
-
-                mailHelper.sendMail(new MailDto("纪念日提醒", dto.getMemorialDayName(), "", ""));
+                List<MemorialDayUserDto> dtoList = memorialDayUserRelService.listUsersByDayId(dto.getId());
+                dtoList.forEach(e->{
+                    mailHelper.sendMail(new MailDto("纪念日提醒", dto.getMemorialDayName(), e.getEmail(), "1756330108@qq.com"));
+                });
             }
         }
         XxlJobHelper.log(">>>>>> noticeMemorialDayHandler end >>>>>>>");
