@@ -1,5 +1,7 @@
 package com.bxbro.sun.common.tools.utils;
 
+import cn.hutool.core.date.ChineseDate;
+import cn.hutool.core.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -8,6 +10,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -213,6 +216,21 @@ public class DateUtils {
         // 时间戳相差的毫秒数
         long num = endDateTime - startDateTime;
         return num / 24 / 60 / 60 / 1000;
+    }
+
+    /**
+     * 农历转阳历
+     * @param month
+     * @param day
+     * @return
+     */
+    public static Date lunar2solar(int month, int day) {
+        // 获取今年年份
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        // 判断今年是否是闰年
+        boolean leapYear = DateUtil.isLeapYear(currentYear);
+        ChineseDate chineseDate = new ChineseDate(currentYear, month, day, leapYear);
+        return chineseDate.getGregorianDate();
     }
 
     public static void main(String[] args) {
