@@ -10,7 +10,7 @@
     </resultMap>
 
     <select id="listUsersByDayId" resultType="com.bxbro.sun.notice.domain.dto.MemorialDayUserDto">
-        select tu.user_name, tu.email
+        select tu.user_name, tu.nick_name, tu.email
         from t_memorial_day_user_rel tmdur
         left join t_user tu on tmdur.user_id = tu.id
         where tmdur.memorial_day_id = #{dayId}

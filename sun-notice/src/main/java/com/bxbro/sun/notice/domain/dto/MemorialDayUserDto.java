@@ -12,8 +12,17 @@ import lombok.Data;
 @Data
 public class MemorialDayUserDto {
 
+    /**
+     * 姓名
+     */
     private String userName;
-
+    /**
+     * 昵称
+     */
+    private String nickName;
+    /**
+     * 邮箱
+     */
     private String email;
 
 }
