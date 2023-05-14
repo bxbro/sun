@@ -214,7 +214,7 @@ public class DateUtils {
         long startDateTime = startDate.getTime();
         long endDateTime = endDate.getTime();
         // 时间戳相差的毫秒数
-        long num = endDateTime - startDateTime;
+        long num = startDateTime - endDateTime;
         return num / 24 / 60 / 60 / 1000;
     }
 

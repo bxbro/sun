@@ -42,7 +42,7 @@ public class MemorialDay {
     /**
      * 日期类型
      */
-    private DateTypeEnum dateType;
+    private Integer dateType;
 
     /**
      * 通知的时间点
@@ -67,6 +67,6 @@ public class MemorialDay {
     /**
      * 删除标志位
      */
-    private LogicEnum delFlag;
+    private Integer delFlag;
 
 }

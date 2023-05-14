@@ -31,7 +31,7 @@ public class MemorialDayServiceImpl extends ServiceImpl<MemorialDayMapper, Memor
     @Override
     public List<MemorialDayDto> listAll() {
         LambdaQueryWrapper<MemorialDay> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(MemorialDay::getDelFlag, LogicEnum.UNDELETE);
+        queryWrapper.eq(MemorialDay::getDelFlag, LogicEnum.UNDELETE.getCode());
         List<MemorialDay> memorialDayList = memorialDayMapper.selectList(queryWrapper);
         return BeanUtil.copyToList(memorialDayList, MemorialDayDto.class);
     }

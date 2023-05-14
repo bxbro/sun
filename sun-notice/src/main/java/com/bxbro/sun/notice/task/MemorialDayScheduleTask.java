@@ -13,6 +13,8 @@ import com.bxbro.sun.notice.service.IMemorialDayUserRelService;
 import com.bxbro.sun.notice.support.MailHelper;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -28,6 +30,7 @@ import java.util.List;
  * @since: 1.0
  */
 @Component
+@EnableScheduling
 public class MemorialDayScheduleTask {
 
     @Resource
@@ -38,7 +41,8 @@ public class MemorialDayScheduleTask {
     private MailHelper mailHelper;
 
 
-    @XxlJob(value = "noticeMemorialDayHandler")
+//    @XxlJob(value = "noticeMemorialDayHandler")
+    @Scheduled(cron = "* 0/1 * * * ?")
     public void noticeMemorialDayHandler() {
         XxlJobHelper.log(">>>>>> noticeMemorialDayHandler start >>>>>>>");
 
@@ -69,16 +73,29 @@ public class MemorialDayScheduleTask {
             }
             String currentDateStr = DateUtils.format(new Date(), DateUtils.DATE_PATTERN);
             Date currentDate = DateUtils.stringToDate(currentDateStr, DateUtils.DATE_PATTERN);
+            Long diffValue = DateUtils.calcDiffValue(currentDate, date);
             String[] noticeTimePointArray = dto.getNoticeTimePoints().split(",");
             List<Long> noticeList = ListUtils.convertStr2Long(noticeTimePointArray);
-            if (noticeList.contains(DateUtils.calcDiffValue(currentDate, date))) {
+            if (noticeList.contains(diffValue)) {
                 List<MemorialDayUserDto> dtoList = memorialDayUserRelService.listUsersByDayId(dto.getId());
                 dtoList.forEach(e->{
-                    mailHelper.sendMail(new MailDto("纪念日提醒", dto.getMemorialDayName(), e.getEmail(), "1756330108@qq.com"));
+                    StringBuilder builder = buildEmailContent(dto, diffValue, e);
+                    mailHelper.sendMail(new MailDto("纪念日提醒", builder.toString(), e.getEmail(), "1756330108@qq.com"));
                 });
             }
         }
         XxlJobHelper.log(">>>>>> noticeMemorialDayHandler end >>>>>>>");
+    }
+
+
+    private StringBuilder buildEmailContent(MemorialDayDto dto, Long diffValue, MemorialDayUserDto e) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("尊敬的 ").append(e.getUserName()).append(" 先生/女士:");
+        builder.append("\n距离").append("【").append(dto.getMemorialDayName()).append("】").append("还有").append(Math.abs(diffValue)).append("天；");
+        builder.append("\n记得提前为Ta准备惊喜噢~");
+        builder.append("\n");
+        builder.append("\n您的贴心管家Sun System持续为您服务！");
+        return builder;
     }
 
 
