@@ -12,7 +12,6 @@ import com.bxbro.sun.notice.service.IMemorialDayService;
 import com.bxbro.sun.notice.service.IMemorialDayUserRelService;
 import com.bxbro.sun.notice.support.MailHelper;
 import com.xxl.job.core.context.XxlJobHelper;
-import com.xxl.job.core.handler.annotation.XxlJob;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -53,34 +52,23 @@ public class MemorialDayScheduleTask {
             return;
         }
         for (MemorialDayDto dto : memorialDayDtoList) {
-            if (CharSequenceUtil.isEmpty(dto.getMemorialDayDate())
-                    || CharSequenceUtil.isEmpty(dto.getNoticeTimePoints())) {
+            if (CharSequenceUtil.isEmpty(dto.getMemorialDayDate()) || CharSequenceUtil.isEmpty(dto.getNoticeTimePoints())) {
                 continue;
             }
-
-            Date date = null;
-            String memorialDayDate = dto.getMemorialDayDate();
-            // 如果是农历，需要转换一下
-            if (DateTypeEnum.LUNAR_CALENDAR == dto.getDateType()) {
-                String month = memorialDayDate.split("-")[0];
-                String day = memorialDayDate.split("-")[1];
-                date = DateUtils.lunar2solar(Integer.valueOf(month), Integer.valueOf(day));
-            } else {
-                // 获取今年年份
-                int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-                String dateStr = currentYear + "-" + memorialDayDate;
-                date = DateUtils.stringToDate(dateStr, DateUtils.DATE_PATTERN);
-            }
+            // 将日期统一转成阳历
+            Date date = unifyDate(dto);
             String currentDateStr = DateUtils.format(new Date(), DateUtils.DATE_PATTERN);
             Date currentDate = DateUtils.stringToDate(currentDateStr, DateUtils.DATE_PATTERN);
+            // 计算当天日期与纪念日日期的差值
             Long diffValue = DateUtils.calcDiffValue(currentDate, date);
+
             String[] noticeTimePointArray = dto.getNoticeTimePoints().split(",");
-            List<Long> noticeList = ListUtils.convertStr2Long(noticeTimePointArray);
-            if (noticeList.contains(diffValue)) {
+            List<Long> noticeFreqList = ListUtils.convertStr2Long(noticeTimePointArray);
+            if (noticeFreqList.contains(diffValue)) {
                 List<MemorialDayUserDto> dtoList = memorialDayUserRelService.listUsersByDayId(dto.getId());
-                dtoList.forEach(e->{
-                    StringBuilder builder = buildEmailContent(dto, diffValue, e);
-                    mailHelper.sendMail(new MailDto("纪念日提醒", builder.toString(), e.getEmail(), "1756330108@qq.com"));
+                dtoList.forEach(e -> {
+                    String content = buildEmailContent(dto, diffValue, e);
+                    mailHelper.sendMail(new MailDto("纪念日提醒", content, e.getEmail(), "1756330108@qq.com"));
                 });
             }
         }
@@ -88,14 +76,44 @@ public class MemorialDayScheduleTask {
     }
 
 
-    private StringBuilder buildEmailContent(MemorialDayDto dto, Long diffValue, MemorialDayUserDto e) {
+    /**
+     * 统一日期类型
+     * @param dto
+     * @return
+     */
+    private Date unifyDate(MemorialDayDto dto) {
+        Date date = null;
+        String memorialDayDate = dto.getMemorialDayDate();
+        // 如果是农历，需要转换一下
+        if (DateTypeEnum.LUNAR_CALENDAR == dto.getDateType()) {
+            String month = memorialDayDate.split("-")[0];
+            String day = memorialDayDate.split("-")[1];
+            date = DateUtils.lunar2solar(Integer.valueOf(month), Integer.valueOf(day));
+        } else {
+            // 获取今年年份
+            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+            String dateStr = currentYear + "-" + memorialDayDate;
+            date = DateUtils.stringToDate(dateStr, DateUtils.DATE_PATTERN);
+        }
+        return date;
+    }
+
+
+    /**
+     * 组装邮件内容
+     * @param dto
+     * @param diffValue
+     * @param e
+     * @return
+     */
+    private String buildEmailContent(MemorialDayDto dto, Long diffValue, MemorialDayUserDto e) {
         StringBuilder builder = new StringBuilder();
         builder.append("尊敬的 ").append(e.getUserName()).append(" 先生/女士:");
         builder.append("\n距离").append("【").append(dto.getMemorialDayName()).append("】").append("还有").append(Math.abs(diffValue)).append("天；");
         builder.append("\n记得提前为Ta准备惊喜噢~");
         builder.append("\n");
         builder.append("\n您的贴心管家Sun System持续为您服务！");
-        return builder;
+        return builder.toString();
     }
 
 
