@@ -2,6 +2,7 @@ package com.bxbro.sun.notice.support;
 
 import com.alibaba.fastjson.JSON;
 import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.base.exception.SunException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
@@ -36,7 +37,11 @@ public class MailHelper {
         simpleMailMessage.setFrom(mailDto.getFromAddress());
         simpleMailMessage.setTo(mailDto.getToAddress());
         LOGGER.info("the content of mail is [{}]", JSON.toJSONString(simpleMailMessage));
-        javaMailSender.send(simpleMailMessage);
+        try {
+            javaMailSender.send(simpleMailMessage);
+        } catch (SunException ex) {
+            LOGGER.error(String.format("Exception happened at [%s]", ex));
+        }
         LOGGER.info("Send mail succeed.");
     }
 }

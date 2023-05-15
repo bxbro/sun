@@ -12,8 +12,8 @@ import com.bxbro.sun.notice.service.IMemorialDayService;
 import com.bxbro.sun.notice.service.IMemorialDayUserRelService;
 import com.bxbro.sun.notice.support.MailHelper;
 import com.xxl.job.core.context.XxlJobHelper;
+import com.xxl.job.core.handler.annotation.XxlJob;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -40,8 +40,7 @@ public class MemorialDayScheduleTask {
     private MailHelper mailHelper;
 
 
-//    @XxlJob(value = "noticeMemorialDayHandler")
-    @Scheduled(cron = "* 0/1 * * * ?")
+    @XxlJob(value = "noticeMemorialDayHandler")
     public void noticeMemorialDayHandler() {
         XxlJobHelper.log(">>>>>> noticeMemorialDayHandler start >>>>>>>");
 

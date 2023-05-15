@@ -2,6 +2,7 @@ package com.bxbro.sun.notice.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bxbro.sun.common.base.domain.entity.MemorialDay;
 import com.bxbro.sun.common.base.enums.LogicEnum;
@@ -30,7 +31,7 @@ public class MemorialDayServiceImpl extends ServiceImpl<MemorialDayMapper, Memor
 
     @Override
     public List<MemorialDayDto> listAll() {
-        LambdaQueryWrapper<MemorialDay> queryWrapper = new LambdaQueryWrapper<>();
+        LambdaQueryWrapper<MemorialDay> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(MemorialDay::getDelFlag, LogicEnum.UNDELETE.getCode());
         List<MemorialDay> memorialDayList = memorialDayMapper.selectList(queryWrapper);
         return BeanUtil.copyToList(memorialDayList, MemorialDayDto.class);
