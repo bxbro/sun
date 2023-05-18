@@ -109,7 +109,8 @@ public class MemorialDayScheduleTask {
         StringBuilder builder = new StringBuilder();
         builder.append("尊敬的").append(e.getNickName()).append("先生/女士:");
         builder.append("\n");
-        builder.append("\n距离").append("【").append(dto.getMemorialDayName()).append("】").append("还有").append(Math.abs(diffValue)).append("天；");
+        builder.append("\n距离").append("【").append(dto.getMemorialDayName())
+                .append(dto.getMemorialDayDate()).append("】").append("还有").append(Math.abs(diffValue)).append("天；");
         builder.append("\n记得提前为Ta准备惊喜噢~~");
         builder.append("\n\n");
         builder.append("\n您的贴心管家Sun System持续为您服务！");
