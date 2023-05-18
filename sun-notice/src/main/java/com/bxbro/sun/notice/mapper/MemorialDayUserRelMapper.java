@@ -2,7 +2,7 @@ package com.bxbro.sun.notice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bxbro.sun.common.base.domain.entity.MemorialDayUserRel;
-import com.bxbro.sun.notice.domain.dto.MemorialDayUserDto;
+import com.bxbro.sun.notice.domain.dto.MemorialDayUserDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +24,5 @@ public interface MemorialDayUserRelMapper extends BaseMapper<MemorialDayUserRel>
      * @param dayId
      * @return
      */
-    List<MemorialDayUserDto> listUsersByDayId(@Param("dayId") Long dayId);
+    List<MemorialDayUserDTO> listUsersByDayId(@Param("dayId") Long dayId);
 }

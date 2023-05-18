@@ -2,7 +2,7 @@ package com.bxbro.sun.notice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bxbro.sun.common.base.domain.entity.MemorialDayUserRel;
-import com.bxbro.sun.notice.domain.dto.MemorialDayUserDto;
+import com.bxbro.sun.notice.domain.dto.MemorialDayUserDTO;
 
 import java.util.List;
 
@@ -21,5 +21,5 @@ public interface IMemorialDayUserRelService extends IService<MemorialDayUserRel>
      * @param dayId
      * @return
      */
-    List<MemorialDayUserDto> listUsersByDayId(Long dayId);
+    List<MemorialDayUserDTO> listUsersByDayId(Long dayId);
 }

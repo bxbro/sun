@@ -6,8 +6,8 @@ import com.bxbro.sun.common.base.domain.dto.MailDto;
 import com.bxbro.sun.common.base.enums.DateTypeEnum;
 import com.bxbro.sun.common.tools.utils.DateUtils;
 import com.bxbro.sun.common.tools.utils.ListUtils;
-import com.bxbro.sun.notice.domain.dto.MemorialDayDto;
-import com.bxbro.sun.notice.domain.dto.MemorialDayUserDto;
+import com.bxbro.sun.notice.domain.dto.MemorialDayDTO;
+import com.bxbro.sun.notice.domain.dto.MemorialDayUserDTO;
 import com.bxbro.sun.notice.service.IMemorialDayService;
 import com.bxbro.sun.notice.service.IMemorialDayUserRelService;
 import com.bxbro.sun.notice.support.MailHelper;
@@ -45,12 +45,12 @@ public class MemorialDayScheduleTask {
         XxlJobHelper.log(">>>>>> noticeMemorialDayHandler start >>>>>>>");
 
         // 1.遍历t_memorial_day表，获取所有需要提醒的纪念日
-        List<MemorialDayDto> memorialDayDtoList = memorialDayService.listAll();
-        if (CollUtil.isEmpty(memorialDayDtoList)) {
+        List<MemorialDayDTO> memorialDayDTOList = memorialDayService.listAll();
+        if (CollUtil.isEmpty(memorialDayDTOList)) {
             XxlJobHelper.log(">>>>>>数据库中不存在需要提醒的纪念日>>>>>>>");
             return;
         }
-        for (MemorialDayDto dto : memorialDayDtoList) {
+        for (MemorialDayDTO dto : memorialDayDTOList) {
             if (CharSequenceUtil.isEmpty(dto.getMemorialDayDate()) || CharSequenceUtil.isEmpty(dto.getNoticeTimePoints())) {
                 continue;
             }
@@ -64,7 +64,7 @@ public class MemorialDayScheduleTask {
             String[] noticeTimePointArray = dto.getNoticeTimePoints().split(",");
             List<Long> noticeFreqList = ListUtils.convertStr2Long(noticeTimePointArray);
             if (noticeFreqList.contains(diffValue)) {
-                List<MemorialDayUserDto> dtoList = memorialDayUserRelService.listUsersByDayId(dto.getId());
+                List<MemorialDayUserDTO> dtoList = memorialDayUserRelService.listUsersByDayId(dto.getId());
                 dtoList.forEach(e -> {
                     String content = buildEmailContent(dto, diffValue, e);
                     mailHelper.sendMail(new MailDto("纪念日提醒", content, e.getEmail(), "1756330108@qq.com"));
@@ -80,7 +80,7 @@ public class MemorialDayScheduleTask {
      * @param dto
      * @return
      */
-    private Date unifyDate(MemorialDayDto dto) {
+    private Date unifyDate(MemorialDayDTO dto) {
         Date date = null;
         String memorialDayDate = dto.getMemorialDayDate();
         // 如果是农历，需要转换一下
@@ -105,12 +105,12 @@ public class MemorialDayScheduleTask {
      * @param e
      * @return
      */
-    private String buildEmailContent(MemorialDayDto dto, Long diffValue, MemorialDayUserDto e) {
+    private String buildEmailContent(MemorialDayDTO dto, Long diffValue, MemorialDayUserDTO e) {
         StringBuilder builder = new StringBuilder();
         builder.append("尊敬的").append(e.getNickName()).append("先生/女士:");
         builder.append("\n");
-        builder.append("\n\t距离").append("【").append(dto.getMemorialDayName()).append("】").append("还有").append(Math.abs(diffValue)).append("天；");
-        builder.append("\n  记得提前为Ta准备惊喜噢~~");
+        builder.append("\n距离").append("【").append(dto.getMemorialDayName()).append("】").append("还有").append(Math.abs(diffValue)).append("天；");
+        builder.append("\n记得提前为Ta准备惊喜噢~~");
         builder.append("\n\n");
         builder.append("\n您的贴心管家Sun System持续为您服务！");
         return builder.toString();

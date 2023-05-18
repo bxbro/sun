@@ -2,7 +2,7 @@ package com.bxbro.sun.notice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bxbro.sun.common.base.domain.entity.MemorialDay;
-import com.bxbro.sun.notice.domain.dto.MemorialDayDto;
+import com.bxbro.sun.notice.domain.dto.MemorialDayDTO;
 
 import java.util.List;
 
@@ -19,5 +19,5 @@ public interface IMemorialDayService extends IService<MemorialDay> {
      * 查询所有纪念日
      * @return
      */
-    List<MemorialDayDto> listAll();
+    List<MemorialDayDTO> listAll();
 }

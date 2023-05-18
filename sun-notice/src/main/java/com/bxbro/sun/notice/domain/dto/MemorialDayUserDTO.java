@@ -10,7 +10,7 @@ import lombok.Data;
  * @since: 1.0
  */
 @Data
-public class MemorialDayUserDto {
+public class MemorialDayUserDTO {
 
     /**
      * 姓名

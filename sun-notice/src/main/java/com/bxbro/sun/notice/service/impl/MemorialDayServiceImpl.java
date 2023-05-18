@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bxbro.sun.common.base.domain.entity.MemorialDay;
 import com.bxbro.sun.common.base.enums.LogicEnum;
-import com.bxbro.sun.notice.domain.dto.MemorialDayDto;
+import com.bxbro.sun.notice.domain.dto.MemorialDayDTO;
 import com.bxbro.sun.notice.mapper.MemorialDayMapper;
 import com.bxbro.sun.notice.service.IMemorialDayService;
 import org.springframework.stereotype.Service;
@@ -30,10 +30,10 @@ public class MemorialDayServiceImpl extends ServiceImpl<MemorialDayMapper, Memor
 
 
     @Override
-    public List<MemorialDayDto> listAll() {
+    public List<MemorialDayDTO> listAll() {
         LambdaQueryWrapper<MemorialDay> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(MemorialDay::getDelFlag, LogicEnum.UNDELETE.getCode());
         List<MemorialDay> memorialDayList = memorialDayMapper.selectList(queryWrapper);
-        return BeanUtil.copyToList(memorialDayList, MemorialDayDto.class);
+        return BeanUtil.copyToList(memorialDayList, MemorialDayDTO.class);
     }
 }
