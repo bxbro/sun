@@ -2,7 +2,7 @@ package com.bxbro.sun.notice.task;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
-import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDTO;
 import com.bxbro.sun.common.base.enums.DateTypeEnum;
 import com.bxbro.sun.common.tools.utils.DateUtils;
 import com.bxbro.sun.common.tools.utils.ListUtils;
@@ -67,7 +67,7 @@ public class MemorialDayScheduleTask {
                 List<MemorialDayUserDTO> dtoList = memorialDayUserRelService.listUsersByDayId(dto.getId());
                 dtoList.forEach(e -> {
                     String content = buildEmailContent(dto, diffValue, e);
-                    mailHelper.sendMail(new MailDto("纪念日提醒", content, e.getEmail(), "1756330108@qq.com"));
+                    mailHelper.sendMail(new MailDTO("纪念日提醒", content, e.getEmail(), "1756330108@qq.com"));
                 });
             }
         }

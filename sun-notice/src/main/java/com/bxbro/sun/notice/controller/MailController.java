@@ -1,6 +1,6 @@
 package com.bxbro.sun.notice.controller;
 
-import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDTO;
 import com.bxbro.sun.common.tools.utils.ResultUtil;
 import com.bxbro.sun.core.model.BaseResult;
 import com.bxbro.sun.notice.support.MailHelper;
@@ -25,7 +25,7 @@ public class MailController {
     private MailHelper mailHelper;
 
     @PostMapping("/v1/new")
-    public BaseResult sendMail(@RequestBody MailDto mailDto) {
+    public BaseResult sendMail(@RequestBody MailDTO mailDto) {
         mailHelper.sendMail(mailDto);
         return ResultUtil.outSuccess();
     }

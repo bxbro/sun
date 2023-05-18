@@ -1,6 +1,6 @@
 package com.bxbro.sun.platform.service.feign;
 
-import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDTO;
 import com.bxbro.sun.core.model.BaseResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -16,5 +16,5 @@ public interface NoticeFeign {
      * @return
      */
     @PostMapping("/mail/api/v1/new")
-    BaseResult sendMail(@RequestBody MailDto mailDto);
+    BaseResult sendMail(@RequestBody MailDTO mailDto);
 }

@@ -1,6 +1,6 @@
 package com.bxbro.sun.platform.task;
 
-import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDTO;
 import com.bxbro.sun.common.base.enums.TaskStatusEnum;
 import com.bxbro.sun.common.tools.utils.DateUtils;
 import com.bxbro.sun.platform.config.MailConfig;
@@ -74,13 +74,13 @@ public class MailScheduleTask {
             if (StringUtils.compare(currentDateStr, deadlineStr) < 0 && DateUtils.calcDiffValue(currentDate, deadline) == 8L) {
                 XxlJobHelper.log("Attention !!! The task [{}] remains only 8 days!!!", task.getTaskName());
                 // 发邮件提醒 to me
-                MailDto mailDto = new MailDto(task.getTaskName(), task.getContent(), config.getFromAddress(), config.getFromAddress());
+                MailDTO mailDto = new MailDTO(task.getTaskName(), task.getContent(), config.getFromAddress(), config.getFromAddress());
                 noticeFeign.sendMail(mailDto);
 
             } else if (StringUtils.compare(currentDateStr, deadlineStr) == 0) {
                 XxlJobHelper.log("Already send e-mail to her!!! TaskName is:[{}]", task.getTaskName());
                 // 发送邮件祝福 to her
-                MailDto mailDto = new MailDto(task.getTaskName(), config.getBirthdayText(), config.getToAddress(), config.getFromAddress());
+                MailDTO mailDto = new MailDTO(task.getTaskName(), config.getBirthdayText(), config.getToAddress(), config.getFromAddress());
                 noticeFeign.sendMail(mailDto);
 
             } else if(StringUtils.compare(currentDateStr, deadlineStr) > 0) {

@@ -1,6 +1,6 @@
 package com.bxbro.sun.notice.service;
 
-import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDTO;
 import com.bxbro.sun.notice.support.MailHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class MailServiceTest {
 
     @Test
     public void testSendMail() {
-        MailDto mailDto = new MailDto();
+        MailDTO mailDto = new MailDTO();
         mailDto.setContent(">>>>just for test>>>>");
         mailDto.setSubject(">>>>测试>>>>");
         mailDto.setFromAddress("1756330108@qq.com");

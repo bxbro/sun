@@ -1,7 +1,7 @@
 package com.bxbro.sun.notice.support;
 
 import com.alibaba.fastjson.JSON;
-import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDTO;
 import com.bxbro.sun.common.base.exception.SunException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class MailHelper {
      * 发送邮件
      * @param mailDto
      */
-    public void sendMail(MailDto mailDto) {
+    public void sendMail(MailDTO mailDto) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setSubject(mailDto.getSubject());
         simpleMailMessage.setText(mailDto.getContent());

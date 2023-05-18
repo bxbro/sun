@@ -1,6 +1,6 @@
 package com.bxbro.sun.platform.service.feign;
 
-import com.bxbro.sun.common.base.domain.dto.MailDto;
+import com.bxbro.sun.common.base.domain.dto.MailDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ public class NoticeFeignTest {
 
     @Test
     public void testSendMail() {
-        MailDto mailDto = new MailDto();
+        MailDTO mailDto = new MailDTO();
         mailDto.setContent(">>>>just for test>>>>");
         mailDto.setSubject(">>>>测试>>>>");
         mailDto.setFromAddress("1756330108@qq.com");
