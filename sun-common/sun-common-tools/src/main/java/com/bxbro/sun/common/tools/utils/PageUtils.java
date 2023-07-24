@@ -15,12 +15,21 @@ import java.util.List;
  */
 public class PageUtils {
 
-    public static <T> Page<T> convertPage(Page<?> pageDto, Class<T> voClazz) throws InstantiationException, IllegalAccessException {
+    /**
+     * 将分页结果集转换成VO对象的结果集
+     * @param pageDto 分页结果集
+     * @param voClazz 目标VO类
+     * @param <T>
+     * @return
+     * @throws ReflectiveOperationException
+     */
+    public static <T> Page<T> convertPage(Page<?> pageDto, Class<T> voClazz)
+            throws ReflectiveOperationException {
         List<T> recordList = new ArrayList<>();
         Page<T> resultPage = new Page<>(pageDto.getCurrent(), pageDto.getSize(), pageDto.getTotal());
         for (Object obj : pageDto.getRecords()) {
             T vo = voClazz.newInstance();
-            BeanUtil.copyProperties(obj, vo, true);
+            BeanUtil.copyProperties(obj, vo);
             recordList.add(vo);
         }
         resultPage.setRecords(recordList);

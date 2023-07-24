@@ -1,9 +1,11 @@
 package com.bxbro.sun.platform.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bxbro.sun.common.base.domain.entity.TaskManage;
 import com.bxbro.sun.common.base.enums.BusinessEnum;
 import com.bxbro.sun.common.base.enums.LogicEnum;
 import com.bxbro.sun.common.base.enums.SystemEnum;
@@ -15,15 +17,13 @@ import com.bxbro.sun.common.tools.utils.ResultUtil;
 import com.bxbro.sun.core.model.BaseResult;
 import com.bxbro.sun.core.template.ServiceDelegator;
 import com.bxbro.sun.core.template.ServiceTemplate;
-import com.bxbro.sun.common.base.domain.entity.TaskManage;
 import com.bxbro.sun.platform.domain.request.TaskListRequest;
 import com.bxbro.sun.platform.domain.request.UpsertTaskRequest;
-import com.bxbro.sun.platform.domain.vo.TaskListDataVo;
+import com.bxbro.sun.platform.domain.vo.TaskListDataVO;
 import com.bxbro.sun.platform.domain.vo.TaskManageVO;
 import com.bxbro.sun.platform.mapper.TaskManageMapper;
 import com.bxbro.sun.platform.service.TaskManageService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,11 +38,11 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
     private TaskManageMapper taskManageMapper;
 
     @Override
-    public BaseResult upsertTask(UpsertTaskRequest request) {
-        return ServiceTemplate.doService(request, new ServiceDelegator<UpsertTaskRequest, BaseResult>() {
+    public BaseResult<Long> upsertTask(UpsertTaskRequest request) {
+        return ServiceTemplate.doService(request, new ServiceDelegator<UpsertTaskRequest, BaseResult<Long>>() {
             @Override
-            public BaseResult initResult() {
-                return new BaseResult();
+            public BaseResult<Long> initResult() {
+                return new BaseResult<>();
             }
 
             @Override
@@ -51,12 +51,12 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
             }
 
             @Override
-            public BaseResult doService(UpsertTaskRequest req) throws SunException {
+            public BaseResult<Long> doService(UpsertTaskRequest req) throws SunException {
                 Long taskId;
                 // 新增
                 if (req.getId() == null) {
                     TaskManage taskManage = new TaskManage();
-                    BeanUtils.copyProperties(req, taskManage);
+                    BeanUtil.copyProperties(req, taskManage);
                     Date deadline = DateUtils.stringToDate(req.getDeadline(), DateUtils.DATE_PATTERN);
                     taskManage.setDeadline(deadline);
                     taskManage.setTaskStatus(TaskStatusEnum.WAITING_COMPLETE.getCode());
@@ -67,7 +67,7 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
                 else {
                     TaskManage taskManage = taskManageMapper.selectById(req.getId());
                     AssertUtils.notNull(taskManage, "taskId有误，数据库中不存在该任务.");
-                    BeanUtils.copyProperties(req, taskManage);
+                    BeanUtil.copyProperties(req, taskManage);
                     taskManageMapper.updateTask(taskManage);
                     taskId = req.getId();
                 }
@@ -99,11 +99,11 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
     }
 
     @Override
-    public BaseResult queryTaskList(TaskListRequest request) {
-        return ServiceTemplate.doService(request, new ServiceDelegator<TaskListRequest, BaseResult>() {
+    public BaseResult<TaskListDataVO> queryTaskList(TaskListRequest request) {
+        return ServiceTemplate.doService(request, new ServiceDelegator<TaskListRequest, BaseResult<TaskListDataVO>>() {
             @Override
-            public BaseResult initResult() {
-                return new BaseResult();
+            public BaseResult<TaskListDataVO> initResult() {
+                return new BaseResult<>();
             }
 
             @Override
@@ -114,25 +114,25 @@ public class TaskManageServiceImpl extends ServiceImpl<TaskManageMapper, TaskMan
             }
 
             @Override
-            public BaseResult doService(TaskListRequest req) throws SunException {
+            public BaseResult<TaskListDataVO> doService(TaskListRequest req) throws SunException {
                 TaskManage taskManage = new TaskManage();
-                BeanUtils.copyProperties(req, taskManage);
+                BeanUtil.copyProperties(req, taskManage);
 
                 IPage<TaskManage> page = new Page<>(req.getPageNo(), req.getPageSize());
                 QueryWrapper<TaskManage> wrapper = buildQueryWrapper(req, taskManage);
 
                 page = taskManageMapper.selectPage(page, wrapper);
                 if (page == null) {
-                    return new BaseResult();
+                    return new BaseResult<>();
                 }
                 List<TaskManageVO> voList = new ArrayList<>();
                 page.getRecords().forEach(e -> {
                     TaskManageVO vo = new TaskManageVO();
-                    BeanUtils.copyProperties(e, vo);
+                    BeanUtil.copyProperties(e, vo);
                     voList.add(vo);
                 });
 
-                TaskListDataVo dataVo = new TaskListDataVo();
+                TaskListDataVO dataVo = new TaskListDataVO();
                 dataVo.setList(voList);
                 dataVo.setCount(voList.size());
                 return ResultUtil.outSuccess(dataVo);

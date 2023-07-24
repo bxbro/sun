@@ -12,7 +12,7 @@ import java.util.List;
  * @since: 1.0
  */
 @Data
-public class TaskListDataVo {
+public class TaskListDataVO {
     /**
      * 列表长度
      */
