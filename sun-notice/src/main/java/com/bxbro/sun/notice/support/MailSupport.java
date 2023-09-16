@@ -1,6 +1,8 @@
 package com.bxbro.sun.notice.support;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
+import com.bxbro.sun.common.base.domain.dto.CommonMessageDTO;
 import com.bxbro.sun.common.base.domain.dto.MailDTO;
 import com.bxbro.sun.common.base.exception.SunException;
 import org.slf4j.Logger;
@@ -12,25 +14,27 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 邮件工具类
+ * 邮件消息服务类
  *
  * @author: dong
  * @date: 2023/5/11 18:46
  * @since: 1.0
  */
 @Component
-public class MailHelper {
+public class MailSupport implements MessageSupport {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MailHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailSupport.class);
 
     @Resource
     JavaMailSenderImpl javaMailSender;
 
     /**
      * 发送邮件
-     * @param mailDto
+     * @param commonMessageDTO
      */
-    public void sendMail(MailDTO mailDto) {
+    @Override
+    public void sendMessage(CommonMessageDTO commonMessageDTO) {
+        MailDTO mailDto = BeanUtil.copyProperties(commonMessageDTO, MailDTO.class);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setSubject(mailDto.getSubject());
         simpleMailMessage.setText(mailDto.getContent());

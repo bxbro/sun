@@ -33,7 +33,8 @@ public class HelloController {
         mailDto.setSubject(">>>>测试>>>>");
         mailDto.setFromAddress("1756330108@qq.com");
         mailDto.setToAddress("1756330108@qq.com");
-        noticeFeign.sendMail(mailDto);
+        mailDto.setNoticeType("short-message");
+        noticeFeign.sendMessage(mailDto);
         return ResultUtil.outSuccess();
     }
 }

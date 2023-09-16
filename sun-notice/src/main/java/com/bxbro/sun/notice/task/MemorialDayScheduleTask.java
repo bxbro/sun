@@ -10,7 +10,7 @@ import com.bxbro.sun.notice.domain.dto.MemorialDayDTO;
 import com.bxbro.sun.notice.domain.dto.MemorialDayUserDTO;
 import com.bxbro.sun.notice.service.IMemorialDayService;
 import com.bxbro.sun.notice.service.IMemorialDayUserRelService;
-import com.bxbro.sun.notice.support.MailHelper;
+import com.bxbro.sun.notice.support.MailSupport;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -37,7 +37,7 @@ public class MemorialDayScheduleTask {
     @Resource
     private IMemorialDayUserRelService memorialDayUserRelService;
     @Resource
-    private MailHelper mailHelper;
+    private MailSupport mailSupport;
 
 
     @XxlJob(value = "noticeMemorialDayHandler")
@@ -51,7 +51,8 @@ public class MemorialDayScheduleTask {
             return;
         }
         for (MemorialDayDTO dto : memorialDayDTOList) {
-            if (CharSequenceUtil.isEmpty(dto.getMemorialDayDate()) || CharSequenceUtil.isEmpty(dto.getNoticeTimePoints())) {
+            if (CharSequenceUtil.isEmpty(dto.getMemorialDayDate())
+                    || CharSequenceUtil.isEmpty(dto.getNoticeTimePoints())) {
                 continue;
             }
             // 将日期统一转成阳历
@@ -67,7 +68,7 @@ public class MemorialDayScheduleTask {
                 List<MemorialDayUserDTO> dtoList = memorialDayUserRelService.listUsersByDayId(dto.getId());
                 dtoList.forEach(e -> {
                     String content = buildEmailContent(dto, diffValue, e);
-                    mailHelper.sendMail(new MailDTO("纪念日提醒", content, e.getEmail(), "1756330108@qq.com"));
+                    mailSupport.sendMessage(new MailDTO("纪念日提醒", content, e.getEmail(), "1756330108@qq.com"));
                 });
             }
         }

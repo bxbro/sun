@@ -16,7 +16,10 @@ public enum BusinessEnum {
     TASK_NAME_NOT_EXIST(2001, "taskName not exist."),
     TASK_TYPE_NOT_EXIST(2002, "taskType not exist."),
     DEADLINE_NOT_EXIST(2003, "deadline not exist."),
-    CONTENT_NOT_EXIST(2004, "content not exist.")
+    CONTENT_NOT_EXIST(2004, "content not exist."),
+
+    /**--------notice相关----------**/
+    UNKNOWN_NOTICE_TYPE(3000, "unknown notice type")
     ;
 
     private Integer code;

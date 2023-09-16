@@ -28,7 +28,7 @@ public class NoticeFeignTest {
         mailDto.setSubject(">>>>测试>>>>");
         mailDto.setFromAddress("1756330108@qq.com");
         mailDto.setToAddress("1756330108@qq.com");
-        noticeFeign.sendMail(mailDto);
+        noticeFeign.sendMessage(mailDto);
         log.info("=======send succeed!=========");
     }
 }

@@ -1,15 +1,23 @@
 package com.bxbro.sun.platform.task;
 
+import cn.hutool.core.text.CharSequenceUtil;
+import com.bxbro.sun.common.base.domain.dto.CommonMessageDTO;
 import com.bxbro.sun.common.base.domain.dto.MailDTO;
+import com.bxbro.sun.common.base.domain.dto.ShortMessageDTO;
+import com.bxbro.sun.common.base.domain.entity.TaskManage;
+import com.bxbro.sun.common.base.enums.BusinessEnum;
+import com.bxbro.sun.common.base.enums.NoticeTypeEnum;
 import com.bxbro.sun.common.base.enums.TaskStatusEnum;
+import com.bxbro.sun.common.base.exception.SunException;
 import com.bxbro.sun.common.tools.utils.DateUtils;
 import com.bxbro.sun.platform.config.MailConfig;
-import com.bxbro.sun.common.base.domain.entity.TaskManage;
+import com.bxbro.sun.platform.config.ShortMessageConfig;
 import com.bxbro.sun.platform.mapper.TaskManageMapper;
 import com.bxbro.sun.platform.service.feign.NoticeFeign;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -34,7 +42,12 @@ public class MailScheduleTask {
     @Resource
     private NoticeFeign noticeFeign;
     @Resource
-    private MailConfig config;
+    private MailConfig mailConfig;
+    @Resource
+    private ShortMessageConfig shortMessageConfig;
+
+    @Value("${sun.notice-type}")
+    private String noticeType;
 
 
     @XxlJob(value = "testXxlJobHandler")
@@ -74,22 +87,44 @@ public class MailScheduleTask {
             if (StringUtils.compare(currentDateStr, deadlineStr) < 0 && DateUtils.calcDiffValue(currentDate, deadline) == 8L) {
                 XxlJobHelper.log("Attention !!! The task [{}] remains only 8 days!!!", task.getTaskName());
                 // 发邮件提醒 to me
-                MailDTO mailDto = new MailDTO(task.getTaskName(), task.getContent(), config.getFromAddress(), config.getFromAddress());
-                noticeFeign.sendMail(mailDto);
-
-            } else if (StringUtils.compare(currentDateStr, deadlineStr) == 0) {
-                XxlJobHelper.log("Already send e-mail to her!!! TaskName is:[{}]", task.getTaskName());
-                // 发送邮件祝福 to her
-                MailDTO mailDto = new MailDTO(task.getTaskName(), config.getBirthdayText(), config.getToAddress(), config.getFromAddress());
-                noticeFeign.sendMail(mailDto);
+                CommonMessageDTO commonMessageDTO = buildCommonMessageDTO(noticeType, task.getTaskName(), task.getContent());
+                noticeFeign.sendMessage(commonMessageDTO);
 
             } else if(StringUtils.compare(currentDateStr, deadlineStr) > 0) {
                 XxlJobHelper.log("The task [{}] has been delayed.", task.getTaskName());
                 // 将task设置为已超期
                 task.setTaskStatus(TaskStatusEnum.DELAYED.getCode());
                 taskManageMapper.updateTask(task);
+            } else {
+                // do nothing
             }
         }
         XxlJobHelper.log("=======MailScheduleTask execute end. ========");
+    }
+
+
+    /**
+     * 根据通知类型构建消息体
+     * @param noticeType
+     * @param taskName
+     * @param taskContent
+     * @return
+     */
+    private CommonMessageDTO buildCommonMessageDTO(String noticeType, String taskName, String taskContent) {
+
+        if (CharSequenceUtil.isEmpty(noticeType) || CharSequenceUtil.isEmpty(taskName)
+                || CharSequenceUtil.isEmpty(taskContent)) {
+            return null;
+        }
+        CommonMessageDTO commonMessageDTO = null;
+        if (NoticeTypeEnum.MAIL.getDesc().equals(noticeType)) {
+            commonMessageDTO = new MailDTO(taskName, taskContent, mailConfig.getFromAddress(), mailConfig.getFromAddress());
+        } else if (NoticeTypeEnum.SHORT_MESSAGE.getDesc().equals(noticeType)) {
+            commonMessageDTO = new ShortMessageDTO(shortMessageConfig.getKey(), shortMessageConfig.getSecret());
+        } else {
+            throw new SunException(BusinessEnum.UNKNOWN_NOTICE_TYPE);
+        }
+        commonMessageDTO.setNoticeType(noticeType);
+        return commonMessageDTO;
     }
 }

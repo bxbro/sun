@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MailDTO {
+public class MailDTO extends CommonMessageDTO {
     /**-----邮件主题------**/
     private String subject;
 
