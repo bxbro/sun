@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.bxbro.sun.common.base.domain.dto.CommonMessageDTO;
 import com.bxbro.sun.common.base.domain.dto.MailDTO;
 import com.bxbro.sun.common.base.exception.SunException;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
@@ -21,12 +22,12 @@ import javax.annotation.Resource;
  * @since: 1.0
  */
 @Component
+@RequiredArgsConstructor
 public class MailSupport implements MessageSupport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailSupport.class);
 
-    @Resource
-    JavaMailSenderImpl javaMailSender;
+    private final JavaMailSenderImpl javaMailSender;
 
     /**
      * 发送邮件

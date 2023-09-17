@@ -1,14 +1,9 @@
 package com.bxbro.sun.notice.controller;
 
 import com.bxbro.sun.common.base.domain.dto.CommonMessageDTO;
-import com.bxbro.sun.common.base.enums.BusinessEnum;
-import com.bxbro.sun.common.base.enums.NoticeTypeEnum;
-import com.bxbro.sun.common.base.exception.SunException;
 import com.bxbro.sun.common.tools.utils.ResultUtil;
 import com.bxbro.sun.core.model.BaseResult;
-import com.bxbro.sun.notice.support.MailSupport;
 import com.bxbro.sun.notice.support.MessageSupport;
-import com.bxbro.sun.notice.support.ShortMessageSupport;
 import com.bxbro.sun.notice.support.MessageSupportFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,21 +27,9 @@ public class MainNoticeController {
 
     @PostMapping("/v1")
     public BaseResult<Void> sendMessage(@RequestBody CommonMessageDTO commonMessageDTO) {
-        MessageSupport messageSupport = getMessageSupport(commonMessageDTO.getNoticeType());
+        MessageSupport messageSupport =
+                messageSupportFactory.getMessageSupportByNoticeType(commonMessageDTO.getNoticeType());
         messageSupport.sendMessage(commonMessageDTO);
         return ResultUtil.outSuccess();
-    }
-
-
-    private MessageSupport getMessageSupport(String noticeType) {
-        MessageSupport messageSupport = null;
-        if(NoticeTypeEnum.MAIL.getDesc().equals(noticeType)) {
-            messageSupport = messageSupportFactory.getMessageSupport(MailSupport.class);
-        } else if (NoticeTypeEnum.SHORT_MESSAGE.getDesc().equals(noticeType)) {
-            messageSupport = messageSupportFactory.getMessageSupport(ShortMessageSupport.class);
-        } else {
-            throw new SunException(BusinessEnum.UNKNOWN_NOTICE_TYPE);
-        }
-        return messageSupport;
     }
 }

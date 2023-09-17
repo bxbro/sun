@@ -2,21 +2,29 @@ package com.bxbro.sun.notice.task;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import com.bxbro.sun.common.base.domain.dto.CommonMessageDTO;
 import com.bxbro.sun.common.base.domain.dto.MailDTO;
+import com.bxbro.sun.common.base.domain.dto.ShortMessageDTO;
+import com.bxbro.sun.common.base.enums.BusinessEnum;
 import com.bxbro.sun.common.base.enums.DateTypeEnum;
+import com.bxbro.sun.common.base.enums.NoticeTypeEnum;
+import com.bxbro.sun.common.base.exception.SunException;
 import com.bxbro.sun.common.tools.utils.DateUtils;
 import com.bxbro.sun.common.tools.utils.ListUtils;
+import com.bxbro.sun.notice.config.ShortMessageConfig;
 import com.bxbro.sun.notice.domain.dto.MemorialDayDTO;
 import com.bxbro.sun.notice.domain.dto.MemorialDayUserDTO;
 import com.bxbro.sun.notice.service.IMemorialDayService;
 import com.bxbro.sun.notice.service.IMemorialDayUserRelService;
-import com.bxbro.sun.notice.support.MailSupport;
+import com.bxbro.sun.notice.support.MessageSupport;
+import com.bxbro.sun.notice.support.MessageSupportFactory;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -30,14 +38,19 @@ import java.util.List;
  */
 @Component
 @EnableScheduling
+@RequiredArgsConstructor
 public class MemorialDayScheduleTask {
 
-    @Resource
-    private IMemorialDayService memorialDayService;
-    @Resource
-    private IMemorialDayUserRelService memorialDayUserRelService;
-    @Resource
-    private MailSupport mailSupport;
+    private final IMemorialDayService memorialDayService;
+
+    private final IMemorialDayUserRelService memorialDayUserRelService;
+
+    private final MessageSupportFactory messageSupportFactory;
+
+    private final ShortMessageConfig shortMessageConfig;
+
+    @Value("${sun.notice-type}")
+    private String noticeType;
 
 
     @XxlJob(value = "noticeMemorialDayHandler")
@@ -68,11 +81,30 @@ public class MemorialDayScheduleTask {
                 List<MemorialDayUserDTO> dtoList = memorialDayUserRelService.listUsersByDayId(dto.getId());
                 dtoList.forEach(e -> {
                     String content = buildEmailContent(dto, diffValue, e);
-                    mailSupport.sendMessage(new MailDTO("纪念日提醒", content, e.getEmail(), "1756330108@qq.com"));
+                    MessageSupport messageSupport = messageSupportFactory.getMessageSupportByNoticeType(noticeType);
+                    messageSupport.sendMessage(buildCommonMessageDTO(e, content));
                 });
             }
         }
         XxlJobHelper.log(">>>>>> noticeMemorialDayHandler end >>>>>>>");
+    }
+
+    /**
+     * 构建消息体
+     * @param e
+     * @param content
+     * @return
+     */
+    private CommonMessageDTO buildCommonMessageDTO(MemorialDayUserDTO e, String content) {
+        CommonMessageDTO commonMessageDTO = null;
+        if (NoticeTypeEnum.MAIL.getDesc().equals(noticeType)) {
+            commonMessageDTO = new MailDTO("纪念日提醒", content, e.getEmail(), "1756330108@qq.com");
+        } else if (NoticeTypeEnum.SHORT_MESSAGE.getDesc().equals(noticeType)) {
+            commonMessageDTO = new ShortMessageDTO(shortMessageConfig.getKey(), shortMessageConfig.getSecret());
+        } else {
+            throw new SunException(BusinessEnum.UNKNOWN_NOTICE_TYPE);
+        }
+        return commonMessageDTO;
     }
 
 
